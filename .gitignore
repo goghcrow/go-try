@@ -1,0 +1,6 @@
+*.test
+.idea/
+
+rewriter/tests/
+rewriter/rewrite_test.go
+example/
