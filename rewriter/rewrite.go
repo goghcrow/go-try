@@ -56,10 +56,11 @@ func Rewrite(dir string, opts ...Option) {
 		}),
 	)
 	r := mkRewriter(*opt, l)
-	r.rewriteAllFiles(func(filename string, f *ast.File) {
+	r.rewriteAllFiles(func(filename string, f *loader.File) {
 		filename = replace(filename, srcFileSuffix, ".go")
 		filename = replace(filename, testFileSuffix, "_test.go")
-		l.WriteFileWithComment(filename, fileComment, f)
+		comment := fmt.Sprintf(fileComment, opt.buildTag)
+		f.WriteWithComment(filename, comment)
 	})
 }
 
@@ -94,10 +95,10 @@ func (r *rewriter) rewriteAllFiles(printer filePrinter) {
 
 	r.l.VisitAllFiles(func(f *loader.File) {
 		log.Printf("write file: %s\n", f.Filename)
-		r.editFile(f)               // 1. rewrite try call
-		r.editImport(f)             // 2. rewrite import
-		f.File.Comments = nil       // 3. delete comments
-		printer(f.Filename, f.File) // 4. writeback
+		r.editFile(f)          // 1. rewrite try call
+		r.editImport(f)        // 2. rewrite import
+		f.File.Comments = nil  // 3. delete comments
+		printer(f.Filename, f) // 4. writeback
 	})
 }
 
@@ -264,7 +265,7 @@ func (r *rewriter) assert(pkg *pkg, pos positioner, ok bool, format string, a ..
 }
 
 type (
-	filePrinter func(filename string, file *ast.File)
+	filePrinter func(filename string, file *loader.File)
 	positioner  interface{ Pos() token.Pos }
 	pkg         = packages.Package
 	tryFnName   = string
