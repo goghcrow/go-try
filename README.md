@@ -1,6 +1,6 @@
 # 𝐖𝐡𝐚𝐭 𝐢𝐬 𝕘𝕠-𝕥𝕣𝕪
 
-A src2src translator for propagating the error in golang.
+A src2src translator for error-propagating in golang.
 
 # [WIP]Quick Start
 

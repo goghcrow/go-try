@@ -1,6 +1,3 @@
 *.test
 .idea/
-
-rewriter/tests/
-rewriter/rewrite_test.go
-example/
+rewriter/test/todo.md

@@ -1,4 +1,4 @@
-package trygen
+package main
 
 import (
 	"log"
