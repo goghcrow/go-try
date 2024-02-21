@@ -22,25 +22,25 @@ func swith1() error {
 		if 𝗲𝗿𝗿𝟯 != nil {
 			return 𝗲𝗿𝗿𝟯
 		}
-		Ø()
+
 	case 1:
 		_, 𝗲𝗿𝗿𝟰 := ret1Err[B]()
 		if 𝗲𝗿𝗿𝟰 != nil {
 			return 𝗲𝗿𝗿𝟰
 		}
-		Ø()
+
 	case 2:
 		_, _, 𝗲𝗿𝗿𝟱 := ret2Err[C, C]()
 		if 𝗲𝗿𝗿𝟱 != nil {
 			return 𝗲𝗿𝗿𝟱
 		}
-		Ø()
+
 	case 3:
 		_, _, _, 𝗲𝗿𝗿𝟲 := ret3Err[D, D, D]()
 		if 𝗲𝗿𝗿𝟲 != nil {
 			return 𝗲𝗿𝗿𝟲
 		}
-		Ø()
+
 	}
 	return nil
 }
@@ -67,25 +67,25 @@ func swith2() error {
 		if 𝗲𝗿𝗿𝟱 != nil {
 			return 𝗲𝗿𝗿𝟱
 		}
-		Ø()
+
 	case b == 2:
 		_, 𝗲𝗿𝗿𝟲 := ret1Err[C]()
 		if 𝗲𝗿𝗿𝟲 != nil {
 			return 𝗲𝗿𝗿𝟲
 		}
-		Ø()
+
 	case a == 3:
 		_, _, 𝗲𝗿𝗿𝟳 := ret2Err[D, D]()
 		if 𝗲𝗿𝗿𝟳 != nil {
 			return 𝗲𝗿𝗿𝟳
 		}
-		Ø()
+
 	case b == 4:
 		_, _, _, 𝗲𝗿𝗿𝟴 := ret3Err[E, E, E]()
 		if 𝗲𝗿𝗿𝟴 != nil {
 			return 𝗲𝗿𝗿𝟴
 		}
-		Ø()
+
 	}
 
 	return nil
@@ -112,7 +112,7 @@ func if1() error {
 		if 𝗲𝗿𝗿𝟭 != nil {
 			return 𝗲𝗿𝗿𝟭
 		}
-		Ø()
+
 		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟯 := ret1Err[A]()
 		if 𝗲𝗿𝗿𝟯 != nil {
 			return 𝗲𝗿𝗿𝟯
@@ -144,7 +144,7 @@ func for1() error {
 		if 𝗲𝗿𝗿𝟭 != nil {
 			return 𝗲𝗿𝗿𝟭
 		}
-		Ø()
+
 		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟯 := ret1Err[A]()
 		if 𝗲𝗿𝗿𝟯 != nil {
 			return 𝗲𝗿𝗿𝟯

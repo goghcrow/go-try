@@ -7,7 +7,6 @@ import (
 	"go/types"
 	"log"
 	"strconv"
-	"strings"
 
 	"github.com/goghcrow/go-ansi"
 	"github.com/goghcrow/go-loader"
@@ -16,59 +15,11 @@ import (
 	"golang.org/x/tools/go/types/typeutil"
 )
 
-type (
-	Option func(*option)
-	option struct {
-		fileSuffix string
-		buildTag   string
-	}
-)
-
-func WithFileSuffix(s string) Option { return func(opt *option) { opt.fileSuffix = s } }
-func WithBuildTag(s string) Option   { return func(opt *option) { opt.buildTag = s } }
-
-func Rewrite(dir string, opts ...Option) {
-	opt := &option{
-		fileSuffix: defaultFileSuffix,
-		buildTag:   defaultBuildTag,
-	}
-	for _, o := range opts {
-		o(opt)
-	}
-
-	var (
-		endsWith       = strings.HasSuffix
-		replace        = strings.ReplaceAll
-		srcFileSuffix  = fmt.Sprintf("_%s.go", opt.fileSuffix)
-		testFileSuffix = fmt.Sprintf("_%s_test.go", opt.fileSuffix)
-		isTryFile      = func(filename string) bool {
-			return endsWith(filename, srcFileSuffix) || endsWith(filename, testFileSuffix)
-		}
-	)
-
-	l := loader.MustNew(
-		dir,
-		loader.WithLoadDepts(),
-		loader.WithLoadTest(),
-		loader.WithBuildTag(opt.buildTag),
-		loader.WithFileFilter(func(f *loader.File) bool {
-			return isTryFile(f.Filename) && imported(f.File, pkgTryPath)
-		}),
-	)
-	r := mkRewriter(*opt, l)
-	r.rewriteAllFiles(func(filename string, f *loader.File) {
-		filename = replace(filename, srcFileSuffix, ".go")
-		filename = replace(filename, testFileSuffix, "_test.go")
-		comment := fmt.Sprintf(fileComment, opt.buildTag)
-		f.WriteWithComment(filename, comment)
-	})
-}
-
 type rewriter struct {
 	opt         option
 	l           *loader.Loader
 	symCnt      int
-	tryFns      map[types.Object]tryFnName
+	tryFns      map[types.Object]fnName
 	waitingZero map[ast.Node]func() /*FuncLit|FuncDecl*/
 	importRT    bool
 }
@@ -77,11 +28,11 @@ func mkRewriter(opt option, l *loader.Loader) *rewriter {
 	r := &rewriter{
 		opt:         opt,
 		l:           l,
-		tryFns:      map[types.Object]tryFnName{},
+		tryFns:      map[types.Object]fnName{},
 		waitingZero: map[ast.Node]func(){},
 	}
-	for _, fnName := range funcTryNames {
-		r.tryFns[l.MustLookup(pkgTryPath+"."+fnName)] = fnName
+	for _, n := range funcTryNames {
+		r.tryFns[l.MustLookup(pkgTryPath+"."+n)] = n
 	}
 	return r
 }
@@ -268,7 +219,7 @@ type (
 	filePrinter func(filename string, file *loader.File)
 	positioner  interface{ Pos() token.Pos }
 	pkg         = packages.Package
-	tryFnName   = string
+	fnName      = string
 )
 
 type stmts struct {
