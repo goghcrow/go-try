@@ -108,3 +108,21 @@ func funcLit() {
 	}() == 42 {
 	}
 }
+
+func fnlit() {
+	go func() {
+		_ = func() error {
+			Try0(ret0())
+			consume1(Try(ret1Err[int]()))
+			return nil
+		}()
+	}()
+
+	func() {
+		_ = func() error {
+			Try0(ret0())
+			consume1(Try(ret1Err[int]()))
+			return nil
+		}()
+	}()
+}

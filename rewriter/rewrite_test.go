@@ -9,7 +9,7 @@ import (
 )
 
 func TestPlayground(t *testing.T) {
-	// Rewrite("./test", WithFileSuffix("todo"))
+	Rewrite("./test", WithFileSuffix("dbg"))
 }
 
 func TestRewrite(t *testing.T) {

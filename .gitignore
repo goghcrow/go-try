@@ -1,3 +1,4 @@
 *.test
 .idea/
-rewriter/test/todo.md
+rewriter/legacy
+rewriter/todo.md
