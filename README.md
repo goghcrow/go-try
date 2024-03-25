@@ -957,3 +957,35 @@ func rewrite_iface_selector_expr() error {
 </tr>
 
 </table>
+
+### Runtime Panic
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+[runtime_panic_try_test.go](rewriter/test/runtime_panic_try_test.go)
+
+</td>
+<td>
+
+[runtime_panic_try_test.go](rewriter/test/runtime_panic_test.go)
+
+</td>
+</tr>
+
+</table>
