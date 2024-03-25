@@ -20,6 +20,7 @@ func named_error() (a int, err error) {
 func catch_and_log() (a int, err error) {
 	defer func() {
 		if err != nil {
+			a = -1
 			fmt.Println(err)
 		}
 	}()
@@ -31,4 +32,20 @@ func catch_and_log() (a int, err error) {
 
 	a = 42
 	return
+}
+func error_wrapping() (a int, err error) {
+	defer handleErrorf(&err, "something wrong")
+	_, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
+	if 𝗲𝗿𝗿𝟭 != nil {
+		err = 𝗲𝗿𝗿𝟭
+		return
+	}
+
+	a = 42
+	return
+}
+func handleErrorf(err *error, format string, args ...interface{}) {
+	if *err != nil {
+		*err = fmt.Errorf(format+": %v", append(args, *err)...)
+	}
 }
