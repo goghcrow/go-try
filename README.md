@@ -102,7 +102,6 @@ func CopyFile(src, dst string) (err error) {
 
 ## Translating
 
-
 ### prelude for example
 
 ```golang
@@ -237,6 +236,199 @@ for i := 𝘃𝗮𝗹𝟭; ; {
 
 </table>
 
+### Switch Stmt
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+switch i := Try(func1[int, A](0)); Try(func1[int, A](i)) {
+    case Try(func1[int, B](i)):
+        println("B")
+    case id[int](i):
+        println("C")
+    case Try(func1[int, D](i)):
+        println("D1")
+    case id[int](i):
+        println("E")
+    case Try(func1[int, D](i)):
+        println("D2")
+    default:
+        println("default")
+}
+```
+
+</td>
+<td>
+
+```golang
+{
+	𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟭 := func1[int, A](0)
+	if 𝗲𝗿𝗿𝟭 != nil {
+		return 𝗲𝗿𝗿𝟭
+	}
+	i := 𝘃𝗮𝗹𝟮
+	𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟮 := func1[int, A](i)
+	if 𝗲𝗿𝗿𝟮 != nil {
+		return 𝗲𝗿𝗿𝟮
+	}
+	𝘃𝗮𝗹𝟭 := 𝘃𝗮𝗹𝟯
+	𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟯 := func1[int, B](i)
+	if 𝗲𝗿𝗿𝟯 != nil {
+		return 𝗲𝗿𝗿𝟯
+	}
+	if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟰 {
+		println("B")
+	} else if 𝘃𝗮𝗹𝟭 == id[int](i) {
+		println("C")
+	} else {
+		𝘃𝗮𝗹𝟱, 𝗲𝗿𝗿𝟰 := func1[int, D](i)
+		if 𝗲𝗿𝗿𝟰 != nil {
+			return 𝗲𝗿𝗿𝟰
+		}
+		if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟱 {
+			println("D1")
+		} else if 𝘃𝗮𝗹𝟭 == id[int](i) {
+			println("E")
+		} else {
+			𝘃𝗮𝗹𝟲, 𝗲𝗿𝗿𝟱 := func1[int, D](i)
+			if 𝗲𝗿𝗿𝟱 != nil {
+				return 𝗲𝗿𝗿𝟱
+			}
+			if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟲 {
+				println("D2")
+			} else {
+				println("default")
+			}
+		}
+	}
+}
+```
+
+</td>
+</tr>
+
+</table>
+
+### Switch Stmt
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+outer:
+	switch {
+	case Try(func1[int, A](1)) == 42:
+		println("outer")
+	inner:
+		switch {
+		case Try(func1[int, B](1)) == 42:
+			break inner
+		case Try(func1[int, C](1)) == 42:
+			goto inner
+		case Try(func1[int, D](1)) == 42:
+			println("inner")
+			break outer
+		case Try(func1[int, E](1)) == 42:
+			println("inner")
+			goto outer
+		}
+	default:
+		println("default")
+	}
+```
+
+</td>
+<td>
+
+```golang
+outer:
+	{
+		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := func1[int, A](1)
+		if 𝗲𝗿𝗿𝟭 != nil {
+			return 𝗲𝗿𝗿𝟭
+		}
+		if 𝘃𝗮𝗹𝟭 == 42 {
+			println("outer")
+		inner:
+			{
+				𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := func1[int, B](1)
+				if 𝗲𝗿𝗿𝟮 != nil {
+					return 𝗲𝗿𝗿𝟮
+				}
+				if 𝘃𝗮𝗹𝟮 == 42 {
+					goto 𝗟_𝗕𝗿𝗸𝗧𝗼_𝗶𝗻𝗻𝗲𝗿𝟭
+				} else {
+					𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := func1[int, C](1)
+					if 𝗲𝗿𝗿𝟯 != nil {
+						return 𝗲𝗿𝗿𝟯
+					}
+					if 𝘃𝗮𝗹𝟯 == 42 {
+						goto inner
+					} else {
+						𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟰 := func1[int, D](1)
+						if 𝗲𝗿𝗿𝟰 != nil {
+							return 𝗲𝗿𝗿𝟰
+						}
+						if 𝘃𝗮𝗹𝟰 == 42 {
+							println("inner")
+							goto 𝗟_𝗕𝗿𝗸𝗧𝗼_𝗼𝘂𝘁𝗲𝗿𝟭
+						} else {
+							𝘃𝗮𝗹𝟱, 𝗲𝗿𝗿𝟱 := func1[int, E](1)
+							if 𝗲𝗿𝗿𝟱 != nil {
+								return 𝗲𝗿𝗿𝟱
+							}
+							if 𝘃𝗮𝗹𝟱 == 42 {
+								println("inner")
+								goto outer
+							}
+						}
+					}
+				}
+			𝗟_𝗕𝗿𝗸𝗧𝗼_𝗶𝗻𝗻𝗲𝗿𝟭:
+			}
+		} else {
+			println("default")
+		}
+	𝗟_𝗕𝗿𝗸𝗧𝗼_𝗼𝘂𝘁𝗲𝗿𝟭:
+	}
+```
+
+</td>
+</tr>
+
+</table>
+
 ### Select Stmt
 
 <table>
@@ -340,6 +532,88 @@ select {
         𝘃𝗮𝗹𝟵[𝘃𝗮𝗹𝟭𝟬] = 𝘃𝗮𝗹𝟭𝟭
     default:
 }
+```
+
+</td>
+</tr>
+
+</table>
+
+### Type Assert
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+expr, ok := Try(ret1Err[ast.Node]()).(ast.Expr)
+_, _ = expr, ok
+```
+
+</td>
+<td>
+
+```golang
+𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[ast.Node]()
+if 𝗲𝗿𝗿𝟭 != nil {
+    return 𝗲𝗿𝗿𝟭
+}
+expr, ok := 𝘃𝗮𝗹𝟭.(ast.Expr)
+_, _ = expr, ok
+```
+
+</td>
+</tr>
+
+</table>
+
+### Tuple Assign
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+_, _ = map[int]int{}[Try(ret1Err[int]())]
+```
+
+</td>
+<td>
+
+```golang
+𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[int]()
+if 𝗲𝗿𝗿𝟭 != nil {
+    return 𝗲𝗿𝗿𝟭
+}
+_, _ = map[int]int{}[𝘃𝗮𝗹𝟭]
 ```
 
 </td>
