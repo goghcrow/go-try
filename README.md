@@ -102,6 +102,9 @@ func CopyFile(src, dst string) (err error) {
 
 ## Translating
 
+
+### prelude for example
+
 ```golang
 package test
 
@@ -126,31 +129,24 @@ func handleErrorf(err *error, format string, args ...interface{}) {
 }
 ```
 
+### Error Handling
+
 <table>
+
 <tr>
 <td> 
 
-</td>
-<td> 
-
-**Source**
+**Before**
 
 </td> 
 <td>
 
-**Target**
+**After**
 
 </td>
 </tr>
 
-
-
 <tr>
-<td> 
-
-**Error Handling**
-
-</td>
 <td>
 
 ```golang
@@ -181,13 +177,26 @@ func error_wrapping() (a int, err error) {
 </td>
 </tr>
 
+</table>
+
+### For Stmt
+
+<table>
 
 <tr>
 <td> 
 
-**For Stmt**
+**Before**
+
+</td> 
+<td>
+
+**After**
 
 </td>
+</tr>
+
+<tr>
 <td>
 
 ```golang
@@ -226,13 +235,26 @@ for i := 𝘃𝗮𝗹𝟭; ; {
 </td>
 </tr>
 
+</table>
+
+### Select Stmt
+
+<table>
 
 <tr>
 <td> 
 
-**Select Stmt**
+**Before**
+
+</td> 
+<td>
+
+**After**
 
 </td>
+</tr>
+
+<tr>
 <td>
 
 ```golang
@@ -248,9 +270,12 @@ type (
 )
 select {
     case <-Try(ret1Err[chan A]()):
-    case *Try(ret1Err[*B]()), *Try(ret1Err[*bool]()) = <-Try(ret1Err[chan C]()):
-    case Try(ret1Err[chan D]()) <- Try(ret1Err[E]()):
-    case Try(ret1Err[[]F]())[Try(ret1Err[G]())] = <-Try(ret1Err[chan H]()):
+    case *Try(ret1Err[*B]()), *Try(ret1Err[*bool]()) = 
+        <-Try(ret1Err[chan C]()):
+    case Try(ret1Err[chan D]()) 
+        <- Try(ret1Err[E]()):
+    case Try(ret1Err[[]F]())[Try(ret1Err[G]())] = 
+        <-Try(ret1Err[chan H]()):
     default:
 }
 ```
