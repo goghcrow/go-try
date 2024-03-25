@@ -200,9 +200,7 @@ func error_wrapping() (a int, err error) {
 
 ```golang
 for i := Try(ret1Err[A]()); 
-    Try(func1[int, bool](i)); 
-    Try(func1[A, C](i)) 
-{
+    Try(func1[int, bool](i)); Try(func1[A, C](i)) {
     println(i)
 }
 ```
@@ -229,6 +227,94 @@ for i := 𝘃𝗮𝗹𝟭; ; {
 		return 𝗲𝗿𝗿𝟯
 	}
 }
+```
+
+</td>
+</tr>
+
+</table>
+
+### Range Stmt
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+Outer:
+	for range Try(ret1Err[[]int]()) {
+	Inner:
+		for range Try(ret1Err[[]string]()) {
+			switch a {
+			case 1:
+				goto Inner
+			case 2:
+				goto Outer
+			case 3:
+				break Inner
+			case 4:
+				break Outer
+			case 5:
+				continue Inner
+			case 6:
+				continue Outer
+			}
+		}
+	}
+```
+
+</td>
+<td>
+
+```golang
+𝗟_𝗚𝗼𝘁𝗼_𝗢𝘂𝘁𝗲𝗿𝟭:
+	{
+		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[[]int]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			return 𝗲𝗿𝗿𝟭
+		}
+	Outer:
+		for range 𝘃𝗮𝗹𝟭 {
+		𝗟_𝗚𝗼𝘁𝗼_𝗜𝗻𝗻𝗲𝗿𝟭:
+			{
+				𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := ret1Err[[]string]()
+				if 𝗲𝗿𝗿𝟮 != nil {
+					return 𝗲𝗿𝗿𝟮
+				}
+			Inner:
+				for range 𝘃𝗮𝗹𝟮 {
+					switch a {
+					case 1:
+						goto 𝗟_𝗚𝗼𝘁𝗼_𝗜𝗻𝗻𝗲𝗿𝟭
+					case 2:
+						goto 𝗟_𝗚𝗼𝘁𝗼_𝗢𝘂𝘁𝗲𝗿𝟭
+					case 3:
+						break Inner
+					case 4:
+						break Outer
+					case 5:
+						continue Inner
+					case 6:
+						continue Outer
+					}
+				}
+			}
+		}
+	}
 ```
 
 </td>
@@ -614,6 +700,52 @@ if 𝗲𝗿𝗿𝟭 != nil {
     return 𝗲𝗿𝗿𝟭
 }
 _, _ = map[int]int{}[𝘃𝗮𝗹𝟭]
+```
+
+</td>
+</tr>
+
+</table>
+
+### Goto Stmt
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+L:
+    var a = Try(ret1Err[int]())
+    goto L
+    println(a)
+```
+
+</td>
+<td>
+
+```golang
+L:
+    𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[int]()
+    if 𝗲𝗿𝗿𝟭 != nil {
+        return 𝗲𝗿𝗿𝟭
+    }
+    var a = 𝘃𝗮𝗹𝟭
+    goto L
+    println(a)
 ```
 
 </td>
