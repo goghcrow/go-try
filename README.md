@@ -334,6 +334,68 @@ _ = 𝘃𝗮𝗹𝟭
 
 </table>
 
+### If Stmt
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+if Try(func1[int, bool](1)) {
+} else if false {
+} else if a := Try(func1[int, bool](2)); a {
+} else if Try(func1[int, bool](3)) {
+} else if true {
+}
+```
+
+</td>
+<td>
+
+```golang
+𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := func1[int, bool](1)
+if 𝗲𝗿𝗿𝟭 != nil {
+	return 𝗲𝗿𝗿𝟭
+}
+if 𝘃𝗮𝗹𝟭 {
+} else if false {
+} else {
+	𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := func1[int, bool](2)
+	if 𝗲𝗿𝗿𝟮 != nil {
+		return 𝗲𝗿𝗿𝟮
+	}
+	if a := 𝘃𝗮𝗹𝟮; a {
+	} else {
+		𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := func1[int, bool](3)
+		if 𝗲𝗿𝗿𝟯 != nil {
+			return 𝗲𝗿𝗿𝟯
+		}
+		if 𝘃𝗮𝗹𝟯 {
+		} else if true {
+		}
+	}
+}
+```
+
+</td>
+</tr>
+
+</table>
+
 ### For Stmt
 
 <table>
@@ -781,7 +843,94 @@ select {
 
 </table>
 
-### Type Assert
+### Goto Stmt
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+L:
+    var a = Try(ret1Err[int]())
+    goto L
+    println(a)
+```
+
+</td>
+<td>
+
+```golang
+L:
+    𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[int]()
+    if 𝗲𝗿𝗿𝟭 != nil {
+        return 𝗲𝗿𝗿𝟭
+    }
+    var a = 𝘃𝗮𝗹𝟭
+    goto L
+    println(a)
+```
+
+</td>
+</tr>
+
+</table>
+
+### Assign Stmt
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+*id(&i) = Try(ret1Err[int]())
+```
+
+</td>
+<td>
+
+```golang
+𝘃𝗮𝗹𝟭 := id(&i)
+𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟭 := ret1Err[int]()
+if 𝗲𝗿𝗿𝟭 != nil {
+	return
+}
+*𝘃𝗮𝗹𝟭 = 𝘃𝗮𝗹𝟮
+```
+
+</td>
+</tr>
+
+</table>
+
+### Map Index Expr
 
 <table>
 
@@ -932,52 +1081,6 @@ if 𝗲𝗿𝗿𝟭 != nil {
     return 𝗲𝗿𝗿𝟭
 }
 _, _ = map[int]int{}[𝘃𝗮𝗹𝟭]
-```
-
-</td>
-</tr>
-
-</table>
-
-### Goto Stmt
-
-<table>
-
-<tr>
-<td> 
-
-**Before**
-
-</td> 
-<td>
-
-**After**
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```golang
-L:
-    var a = Try(ret1Err[int]())
-    goto L
-    println(a)
-```
-
-</td>
-<td>
-
-```golang
-L:
-    𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[int]()
-    if 𝗲𝗿𝗿𝟭 != nil {
-        return 𝗲𝗿𝗿𝟭
-    }
-    var a = 𝘃𝗮𝗹𝟭
-    goto L
-    println(a)
 ```
 
 </td>
@@ -1137,7 +1240,6 @@ type X struct{ x int }
 	var x X
 	𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[int]()
 	if 𝗲𝗿𝗿𝟭 != nil {
-		err = 𝗲𝗿𝗿𝟭
 		return
 	}
 	_ = x.x + 𝘃𝗮𝗹𝟭
@@ -1147,7 +1249,6 @@ type X struct{ x int }
 	𝘃𝗮𝗹𝟮 := x.x
 	𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟮 := ret1Err[int]()
 	if 𝗲𝗿𝗿𝟮 != nil {
-		err = 𝗲𝗿𝗿𝟮
 		return
 	}
 	_ = 𝘃𝗮𝗹𝟮 + 𝘃𝗮𝗹𝟯
