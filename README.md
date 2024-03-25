@@ -178,6 +178,68 @@ func error_wrapping() (a int, err error) {
 
 </table>
 
+### Order of Evaluation
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+type (
+	A = int
+	B = int
+	C = int
+)
+println(
+	[]func(int) int{}[id[int](0)+Try(ret1Err[A]())](
+		id[int](1)+Try(ret1Err[B]()),
+	) + Try(ret1Err[C]()) + id[int](2),
+)
+```
+
+</td>
+<td>
+
+```golang
+𝘃𝗮𝗹𝟭 := id[int](0)
+𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟭 := ret1Err[A]()
+if 𝗲𝗿𝗿𝟭 != nil {
+	return 𝗲𝗿𝗿𝟭
+}
+𝘃𝗮𝗹𝟯 := []func(int) int{}[𝘃𝗮𝗹𝟭+𝘃𝗮𝗹𝟮]
+𝘃𝗮𝗹𝟰 := id[int](1)
+𝘃𝗮𝗹𝟱, 𝗲𝗿𝗿𝟮 := ret1Err[B]()
+if 𝗲𝗿𝗿𝟮 != nil {
+	return 𝗲𝗿𝗿𝟮
+}
+𝘃𝗮𝗹𝟲 := 𝘃𝗮𝗹𝟯(𝘃𝗮𝗹𝟰 + 𝘃𝗮𝗹𝟱)
+𝘃𝗮𝗹𝟳, 𝗲𝗿𝗿𝟯 := ret1Err[C]()
+if 𝗲𝗿𝗿𝟯 != nil {
+	return 𝗲𝗿𝗿𝟯
+}
+𝘃𝗮𝗹𝟴 := id[int](2)
+println(𝘃𝗮𝗹𝟲 + 𝘃𝗮𝗹𝟳 + 𝘃𝗮𝗹𝟴)
+```
+
+</td>
+</tr>
+
+</table>
+
 ### Logical Operator Or
 
 <table>
@@ -978,12 +1040,57 @@ func rewrite_iface_selector_expr() error {
 <tr>
 <td>
 
+```golang
+type X struct{ x int }
+{
+	var x X
+	_ = x.x + Try(ret1Err[int]())
+}
+{
+	var x *X
+	_ = x.x + Try(ret1Err[int]())
+}
+```
+
+</td>
+<td>
+
+```golang
+type X struct{ x int }
+{
+	var x X
+	𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[int]()
+	if 𝗲𝗿𝗿𝟭 != nil {
+		err = 𝗲𝗿𝗿𝟭
+		return
+	}
+	_ = x.x + 𝘃𝗮𝗹𝟭
+}
+{
+	var x *X
+	𝘃𝗮𝗹𝟮 := x.x
+	𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟮 := ret1Err[int]()
+	if 𝗲𝗿𝗿𝟮 != nil {
+		err = 𝗲𝗿𝗿𝟮
+		return
+	}
+	_ = 𝘃𝗮𝗹𝟮 + 𝘃𝗮𝗹𝟯
+}
+```
+
+</td>
+</tr>
+
+
+<tr>
+<td>
+
 [runtime_panic_try_test.go](rewriter/test/runtime_panic_try_test.go)
 
 </td>
 <td>
 
-[runtime_panic_try_test.go](rewriter/test/runtime_panic_test.go)
+[runtime_panic_test.go](rewriter/test/runtime_panic_test.go)
 
 </td>
 </tr>
