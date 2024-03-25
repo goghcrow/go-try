@@ -178,6 +178,100 @@ func error_wrapping() (a int, err error) {
 
 </table>
 
+### Logical Operator Or
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+_ = id(true) || Try(func1[int, bool](2)) || id(false)
+```
+
+</td>
+<td>
+
+```golang
+𝘃𝗮𝗹𝟭 := id(true)
+if !𝘃𝗮𝗹𝟭 {
+	𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟭 := func1[int, bool](2)
+	if 𝗲𝗿𝗿𝟭 != nil {
+		return 𝗲𝗿𝗿𝟭
+	}
+	𝘃𝗮𝗹𝟭 = 𝘃𝗮𝗹𝟮
+}
+if !𝘃𝗮𝗹𝟭 {
+	𝘃𝗮𝗹𝟭 = id(false)
+}
+_ = 𝘃𝗮𝗹𝟭
+```
+
+</td>
+</tr>
+
+</table>
+
+### Logical Operator And
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+_ = id(true) && Try(func1[int, bool](2)) && id(false)
+```
+
+</td>
+<td>
+
+```golang
+𝘃𝗮𝗹𝟭 := id(true)
+if 𝘃𝗮𝗹𝟭 {
+	𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟭 := func1[int, bool](2)
+	if 𝗲𝗿𝗿𝟭 != nil {
+		return 𝗲𝗿𝗿𝟭
+	}
+	𝘃𝗮𝗹𝟭 = 𝘃𝗮𝗹𝟮
+}
+if 𝘃𝗮𝗹𝟭 {
+	𝘃𝗮𝗹𝟭 = id(false)
+}
+_ = 𝘃𝗮𝗹𝟭
+```
+
+</td>
+</tr>
+
+</table>
+
 ### For Stmt
 
 <table>
@@ -746,6 +840,117 @@ L:
     var a = 𝘃𝗮𝗹𝟭
     goto L
     println(a)
+```
+
+</td>
+</tr>
+
+</table>
+
+### Selector Expr
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
+func rewrite_ptr_selector_expr() error {
+	var x *ast.CallExpr
+	{
+		// MAY PANIC
+		consume2(x.Args, Try(ret1Err[string]()))
+	}
+	{
+		// MUST NOT PANIC
+		consume2(x.Pos, Try(ret1Err[string]()))
+	}
+	{
+		// MAY PANIC
+		consume2(x.Pos(), Try(ret1Err[string]()))
+	}
+	return nil
+}
+
+func rewrite_iface_selector_expr() error {
+	var x ast.Node
+	{
+	    // MAY PANIC
+		consume2(x.Pos, Try(ret1Err[string]()))
+	}
+	{
+		// MAY PANIC
+		consume2(x.Pos(), Try(ret1Err[string]()))
+	}
+	return nil
+}
+
+```
+
+</td>
+<td>
+
+```golang
+func rewrite_ptr_selector_expr() error {
+	var x *ast.CallExpr
+	{
+		𝘃𝗮𝗹𝟭 := x.Args
+		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟭 := ret1Err[string]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			return 𝗲𝗿𝗿𝟭
+		}
+		consume2(𝘃𝗮𝗹𝟭, 𝘃𝗮𝗹𝟮)
+	}
+	{
+		𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟮 := ret1Err[string]()
+		if 𝗲𝗿𝗿𝟮 != nil {
+			return 𝗲𝗿𝗿𝟮
+		}
+		consume2(x.Pos, 𝘃𝗮𝗹𝟯)
+	}
+	{
+		𝘃𝗮𝗹𝟰 := x.Pos()
+		𝘃𝗮𝗹𝟱, 𝗲𝗿𝗿𝟯 := ret1Err[string]()
+		if 𝗲𝗿𝗿𝟯 != nil {
+			return 𝗲𝗿𝗿𝟯
+		}
+		consume2(𝘃𝗮𝗹𝟰, 𝘃𝗮𝗹𝟱)
+	}
+	return nil
+}
+func rewrite_iface_selector_expr() error {
+	var x ast.Node
+	{
+		𝘃𝗮𝗹𝟭 := x.Pos
+		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟭 := ret1Err[string]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			return 𝗲𝗿𝗿𝟭
+		}
+		consume2(𝘃𝗮𝗹𝟭, 𝘃𝗮𝗹𝟮)
+	}
+	{
+		𝘃𝗮𝗹𝟯 := x.Pos()
+		𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟮 := ret1Err[string]()
+		if 𝗲𝗿𝗿𝟮 != nil {
+			return 𝗲𝗿𝗿𝟮
+		}
+		consume2(𝘃𝗮𝗹𝟯, 𝘃𝗮𝗹𝟰)
+	}
+	return nil
+}
 ```
 
 </td>
