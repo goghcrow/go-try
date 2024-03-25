@@ -802,6 +802,82 @@ select {
 <td>
 
 ```golang
+// panic when writting nil map
+{
+	var m map[int]int
+	m[Try(ret1Err[int]())] = 1
+}
+
+// won't panic when reading nil map
+{
+	var m map[int]int
+	println(m[0], Try(ret1Err[int]()))
+}
+
+// panic when reading map[any]T
+{
+	var m map[any]int
+	println(m[0], Try(ret1Err[int]()))
+}
+```
+
+</td>
+<td>
+
+```golang
+{
+	var m map[int]int
+	𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[int]()
+	if 𝗲𝗿𝗿𝟭 != nil {
+		return 𝗲𝗿𝗿𝟭
+	}
+	m[𝘃𝗮𝗹𝟭] = 1
+}
+{
+	var m map[int]int
+	𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := ret1Err[int]()
+	if 𝗲𝗿𝗿𝟮 != nil {
+		return 𝗲𝗿𝗿𝟮
+	}
+	println(m[0], 𝘃𝗮𝗹𝟮)
+}
+{
+	var m map[any]int
+	𝘃𝗮𝗹𝟯 := m[0]
+	𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟯 := ret1Err[int]()
+	if 𝗲𝗿𝗿𝟯 != nil {
+		return 𝗲𝗿𝗿𝟯
+	}
+	println(𝘃𝗮𝗹𝟯, 𝘃𝗮𝗹𝟰)
+}
+```
+
+</td>
+</tr>
+
+</table>
+
+### Type Assert
+
+<table>
+
+<tr>
+<td> 
+
+**Before**
+
+</td> 
+<td>
+
+**After**
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```golang
 expr, ok := Try(ret1Err[ast.Node]()).(ast.Expr)
 _, _ = expr, ok
 ```
