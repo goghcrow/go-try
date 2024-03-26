@@ -89,7 +89,8 @@ func rewrite(l *loader.Loader, printer filePrinter) {
 		pkg := loader.MkPkg(f.Pkg)
 		f.File = rewriteFile(tryFns, pkg, f.File) // 1. rewrite try call
 		f.File.Comments = nil                     // 2. delete comments
-		loader.ClearPos(f.File)                   // 3. clear position
-		printer(f.Filename, f)                    // 4. writeback
+		f.File.Doc = nil                          // 3. delete pkg doc
+		loader.ClearPos(f.File)                   // 4. clear position
+		printer(f.Filename, f)                    // 5. writeback
 	})
 }
