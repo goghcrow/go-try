@@ -168,8 +168,8 @@ func (r *fileRewriter) preRewriteBreakToGotoInSwitch(
 	sStmt *switchSt,
 	inFn fnNode,
 ) (
-	block *ast.BlockStmt, // 改写结果
-	brkToL *ast.Ident, // break 跳转 label
+	block *ast.BlockStmt,      // 改写结果
+	brkToL *ast.Ident,         // break 跳转 label
 	brk2go map[*branchSt]bool, // 记录改写的 break branch
 ) {
 	// 如果是 labeled switch
@@ -356,7 +356,7 @@ func (r *caseRewriter) rewriteCasesToIfStmt() (_ ast.Stmt, outHasTry bool) {
 }
 
 func (r *caseRewriter) eliminationFallthrough() {
-	// 有两种思路来消除 fallthroug
+	// 有两种思路来消除 fallthrough
 	// 1. 最早采用的思路
 	//		switch translate 成 if {} else if {} ... else {} 结构
 	//		包含 fallthroug 的 case, 不生成 else 表示控制继续  if {}; if {}
@@ -411,48 +411,50 @@ func (r *caseRewriter) eliminationFallthrough() {
 
 	n := len(r.cs)
 
-	bodys := make([][]ast.Stmt /*BlockStmt*/, n)
-	bodysHasTry := make([]bool, n)
+	bodies := make([][]ast.Stmt /*BlockStmt*/, n)
+	bodiesHasTry := make([]bool, n)
 
 	// 复制阶段:
 	// 因为 fallthrough 是正向不中断控制流, 所以
 	// 通过逆向遍历, 来把 fallthrough 的代码块都向跳转来源复制
 	// 为了保证 scope 正确, 不直接复制 []Stmt, 而是都打包成 BlockStmt 向上复制
 	for i := n - 1; i >= 0; i-- {
-		is, body := r.splitFallthrough(r.cs[i].Body)
+		endWithFall, body := r.rtrimFallthrough(r.cs[i].Body)
 
-		block := &ast.BlockStmt{
-			List: body,
+		if len(body) > 0 {
+			block := &ast.BlockStmt{
+				List: body,
+			}
+			if r.bodyHasTry[i] {
+				r.fr.tryNodes[block] = true
+				bodiesHasTry[i] = true
+			}
+			bodies[i] = []ast.Stmt{block}
 		}
-		if r.bodyHasTry[i] {
-			r.fr.tryNodes[block] = true
-			bodysHasTry[i] = true
-		}
-		bodys[i] = []ast.Stmt{block}
 
-		if is {
+		if endWithFall {
 			// 假设语法正常, 最后一个 case clause 不能是 fallthrough
 			assert(i+1 < n)
-			bodys[i] = concat(bodys[i], bodys[i+1])
-
-			// 更新节点 try 信息
-			if bodysHasTry[i+1] {
+			// 合并 body 并更新 try 状态
+			// try = body[n+1].try? || body[n].try?
+			bodies[i] = concat(bodies[i], bodies[i+1])
+			if bodiesHasTry[i+1] {
 				r.bodyHasTry[i] = true
 			}
 		}
 	}
 
 	// 合并阶段:
-	for i, xs := range bodys {
+	for i, xs := range bodies {
 		if len(xs) == 1 {
 			r.cs[i].Body = xs[0].(*ast.BlockStmt).List
 			delete(r.fr.tryNodes, xs[0])
 		} else {
 			// 不同的 case clause body 之间
-			// 都套路 block 保证 scope 隔离, 且父子关系正确
+			// 都 wrap block 保证 scope 隔离, 且父子关系正确
 			r.cs[i].Body = xs
 		}
-		r.bodyHasTry[i] = bodysHasTry[i]
+		r.bodyHasTry[i] = bodiesHasTry[i]
 	}
 
 	// 上面错误示例的正确转换如下
@@ -477,7 +479,7 @@ func (r *caseRewriter) eliminationFallthrough() {
 	//	println(x)
 }
 
-func (r *caseRewriter) splitFallthrough(xs []ast.Stmt) (_ bool, stmtsWithoutFallthrough []ast.Stmt) {
+func (r *caseRewriter) rtrimFallthrough(xs []ast.Stmt) (_ bool, stmtsWithoutFallthrough []ast.Stmt) {
 	xs = trimTrailingEmptyStmts(xs)
 	if len(xs) == 0 {
 		return false, xs

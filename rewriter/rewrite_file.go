@@ -159,15 +159,16 @@ func (r *fileRewriter) checkShadowedNil(tryCallSiteCtx mctx) {
 }
 
 func (r *fileRewriter) match(ptn ast.Node, f func(c cursor, ctx mctx)) {
-	cache := map[ast.Node]bool{}
-	r.m.Match(r.pkg.Package, ptn, r.f, func(c cursor, ctx mctx) {
-		n := c.Node()
-		if cache[n] {
-			return
-		}
-		cache[n] = true
-		f(c, ctx)
-	})
+	r.m.Match(r.pkg.Package, ptn, r.f, f)
+	// cache := map[ast.Node]bool{}
+	// r.m.Match(r.pkg.Package, ptn, r.f, func(c cursor, ctx mctx) {
+	// 	n := c.Node()
+	// 	if cache[n] {
+	// 		return
+	// 	}
+	// 	cache[n] = true
+	// 	f(c, ctx)
+	// })
 }
 
 func (r *fileRewriter) assert(pos loader.Positioner, ok bool, format string, a ...any) {

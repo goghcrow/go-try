@@ -11,9 +11,10 @@ func (r *fileRewriter) rewriteSelector(ctx *rewriteCtx, n *ast.SelectorExpr) (as
 	if isPkgSel(r.pkg.TypesInfo, n) {
 		return n, nil
 	}
-	if isTypeName(r.pkg.TypesInfo, n) {
-		return n, nil
-	}
+	// 这里应该已经被 pkgSel 覆盖了
+	//if isTypeName(r.pkg.TypesInfo, n) {
+	//	return n, nil
+	//}
 
 	// SelectorExpr 涉及到求值顺序
 	// 需要按照求值顺序进行抽象解释

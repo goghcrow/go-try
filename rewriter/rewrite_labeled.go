@@ -5,17 +5,6 @@ import (
 )
 
 func (r *fileRewriter) rewriteLabeled(ctx *rewriteCtx, n *ast.LabeledStmt) (
-	*ast.LabeledStmt,
-	[]ast.Stmt,
-) {
-	ys, xs := r.rewriteLabeledEx(ctx, n)
-	assert(len(ys) == 1)
-	// 只有 StmtList 允许 labeledStmt
-	// labeled for/range/switch/select 也返回 len(ys) == 1
-	return ys[0].(*ast.LabeledStmt), xs
-}
-
-func (r *fileRewriter) rewriteLabeledEx(ctx *rewriteCtx, n *ast.LabeledStmt) (
 	[]ast.Stmt, // *ast.LabeledStmt,
 	[]ast.Stmt,
 ) {

@@ -43,11 +43,6 @@ func allTypeNames(info *types.Info, xs ...ast.Expr) bool {
 	return true
 }
 
-func isNode[T ast.Node](n ast.Node) bool {
-	_, ok := n.(T)
-	return ok
-}
-
 func typeOf[T types.Type](ty types.Type, underlying bool) (z T, is bool) {
 	if ty == nil {
 		return z, false
@@ -134,9 +129,6 @@ func isTuple2AssignRhs[T any](n ast.Expr, lhs []T, rhs []ast.Expr) bool {
 
 func isTuple2Assign(ctx *rewriteCtx, n ast.Expr) bool {
 	switch p := ctx.unparenParentNode().(type) {
-	case nil:
-		assert(false)
-		return false
 	case *ast.ValueSpec:
 		return isTuple2AssignRhs(n, p.Names, p.Values)
 	case *ast.AssignStmt:

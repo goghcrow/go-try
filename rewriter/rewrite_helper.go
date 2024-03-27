@@ -7,18 +7,13 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
-func (r *fileRewriter) emptyExpr() *ast.CallExpr {
-	r.importRT = true
-	return &ast.CallExpr{
-		Fun: ast.NewIdent(tupleNames[0]),
-	}
+func (r *fileRewriter) emptyExpr() ast.Expr {
+	return r.tupleExpr(nil)
 }
 
 // 把多个表达式和成一个多值表达式
 func (r *fileRewriter) tupleExpr(xs []ast.Expr) ast.Expr {
 	switch len(xs) {
-	case 0:
-		return r.emptyExpr()
 	case 1:
 		return xs[0]
 	default:
@@ -45,6 +40,7 @@ func (r *fileRewriter) assign(ctx *rewriteCtx, rhs ast.Expr) (ast.Expr, ast.Stmt
 // rhs: 多值表达式
 // n: lhs var 数量
 func (r *fileRewriter) tupleAssign(ctx *rewriteCtx, rhs ast.Expr, n int) (ast.Expr, ast.Stmt) {
+	assert(n > 0)
 	switch ctx.parent.node.(type) {
 	case *ast.ExprStmt:
 		return rhs, &ast.EmptyStmt{}
@@ -64,27 +60,15 @@ func (r *fileRewriter) tupleAssign(ctx *rewriteCtx, rhs ast.Expr, n int) (ast.Ex
 	}
 }
 
-func declVal(id *ast.Ident) *ast.DeclStmt {
-	return &ast.DeclStmt{
-		Decl: &ast.GenDecl{
-			Tok: token.VAR,
-			Specs: []ast.Spec{
-				&ast.ValueSpec{
-					Names: []*ast.Ident{id},
-				},
-			},
-		},
-	}
-}
-
 func unpackFunc(n fnNode) (*ast.FuncType, *ast.BlockStmt) {
 	switch n := n.(type) {
 	case *ast.FuncLit:
 		return n.Type, n.Body
 	case *ast.FuncDecl:
 		return n.Type, n.Body
+	default:
+		panic("illegal state")
 	}
-	panic("illegal state")
 }
 
 func trimTrailingEmptyStmts(xs []ast.Stmt) []ast.Stmt {

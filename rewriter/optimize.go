@@ -40,6 +40,7 @@ func optimize(l *loader.Loader, printer filePrinter) {
 	})
 }
 
+// remove?
 func (r *optimizer) unwrapTuple(f *loader.File) {
 	ptn := combinator.CalleeOf(r.m, func(ctx *combinator.MatchCtx, f types.Object) bool {
 		n := ctx.Stack[0].(*ast.CallExpr)

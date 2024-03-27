@@ -3,7 +3,6 @@ package rewriter
 import (
 	"fmt"
 	"go/ast"
-	"go/token"
 )
 
 // 整体可以看成, 按操作语义, 求值的顺序进行抽象解释的过程
@@ -224,12 +223,12 @@ func (r *fileRewriter) rewriteExpr(ctx *rewriteCtx, n ast.Expr) (ast.Expr, []ast
 		// <- 不会发生 runtime panic, 所以不会发生求值顺序语义的问题
 		// 所以不需要因为求值顺序原因展开
 		// 所以不需要特殊处理 `v, ok := <-ch`
-		if false {
-			isChRecv := n.Op == token.ARROW
-			if isChRecv && isTuple2Assign(ctx, n) {
-				return n1, xs
-			}
-		}
+		// if false {
+		// 	isChRecv := n.Op == token.ARROW
+		// 	if isChRecv && isTuple2Assign(ctx, n) {
+		// 		return n1, xs
+		// 	}
+		// }
 
 		return n1, xs
 
@@ -297,8 +296,14 @@ func (r *fileRewriter) rewriteStmt(ctx *rewriteCtx, n ast.Stmt) (ast.Stmt, []ast
 		n1.Decl, xs = r.rewriteDecl(ctx, n.Decl)
 		return n1, xs
 
-	case *ast.LabeledStmt:
-		return r.rewriteLabeled(ctx, n)
+	// 在 rewriteStmtList 中已经处理
+	// 理论上不应该走到这个分支
+	// case *ast.LabeledStmt:
+	// 	ys, xs = r.rewriteLabeled(ctx, n)
+	// 	assert(len(ys) == 1)
+	// 	// 只有 StmtList 允许 labeledStmt
+	// 	// labeled for/range/switch/select 也返回 len(ys) == 1
+	// 	return ys[0].(*ast.LabeledStmt), xs
 
 	case *ast.ExprStmt:
 		n1 := &ast.ExprStmt{}
@@ -495,9 +500,9 @@ func (r *fileRewriter) rewriteStmt(ctx *rewriteCtx, n ast.Stmt) (ast.Stmt, []ast
 
 func (r *fileRewriter) rewriteStmtList(ctx *rewriteCtx, list []ast.Stmt) (zs []ast.Stmt) {
 	for _, it := range list {
-		// 参见 rewriteLabeledEx(...) 注释
+		// 参见 rewriteLabeled(...) 注释
 		if l, ok := it.(*ast.LabeledStmt); ok {
-			xs, ys := r.rewriteLabeledEx(ctx, l)
+			xs, ys := r.rewriteLabeled(ctx, l)
 			zs = concat(zs, ys, xs)
 		} else {
 			x, ys := r.rewriteStmt(ctx, it)
