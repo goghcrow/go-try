@@ -100,7 +100,7 @@ import (
 //
 // try 改写的赋值语句必须提到前面
 // 但是规范要求 break/continue label 必须 enclosing for/range/switch/select
-// 换句话说, , break/continue 目标只能是 labeldStmt {stmt: for/range/switch/select}
+// 换句话说, break/continue 目标只能是 labeledStmt {stmt: for/range/switch/select}
 // 		label 和 for/range/switch/select 之前不能有其他 stmt
 // goto 只收到 block 限制, 不受到 enclosing 限制
 //
@@ -111,7 +111,7 @@ import (
 // 产生冲突, 如果放到 labeled 之前, 语义错误, 放到之间 break/continue 语法错误
 // 必须改写
 //
-// 	1. L 只有 goto  =>  LabledStmt, 套个 Block,
+// 	1. L 只有 goto  =>  LabeledStmt, 套个 Block,
 // 		将提取的assign 和 for/range/switch/select 打包作为新的 labelelStmt.Stmt
 //		e.g.  range 为例
 //		L:
@@ -144,7 +144,7 @@ import (
 //		L: var a = Try(ret1Err[int]()) 构成一条 LabeledStmt, 套个 Block, 会改变作用域 !!!
 // 	2. L 有 goto, 同时有 break 或 continue
 //		block 必须套, 否则 goto 的位置不对, 会 skip 提取的 assign 的再次执行 (e.g. range value)
-//		但是套了 block (改 label.Stmt), break / continue 的跳转就错了, 因为 labeld for/range/switch/select 结构被破坏
+//		但是套了 block (改 label.Stmt), break / continue 的跳转就错了, 因为 labeled for/range/switch/select 结构被破坏
 //		所以, 要么改 break/continue, 要么改 goto
 //		2.1 改 goto, 外层套个 block, 生成一个新的 goto 专用Label, goto 到这个新 label
 //		2.2 改 break/continue, 外层套 block 的同时
@@ -161,7 +161,7 @@ func (r *fileRewriter) preRewriteLabeled() {
 	// break 用在 for/range/switch/select 中, continue 用在 for/range 中
 	ptn := &labelSt{
 		Stmt: matcher.MkPattern[matcher.StmtPattern](r.m, func(n ast.Node, _ *matcher.MatchCtx) bool {
-			// 是否需要在 for/ range / switch / select 前插入 stmt
+			// 是否需要在 for / range / switch / select 前插入 stmt
 			switch n := n.(type) {
 			case *ast.ForStmt:
 				// 参见 rewrite_others.go 对 *ast.ForStmt 改写
@@ -202,9 +202,9 @@ func (r *fileRewriter) preRewriteLabeled() {
 		// 三种情况
 		switch {
 		case gotoCnt == 0:
-			// 1. 没有 goto 跳过去, 只有 break/continue 不要该
+			// 1. 没有 goto 跳过去, 只有 break/continue 不要改
 		case len(branchTo)-gotoCnt == 0:
-			// 2. 只有 goto 跳过去, 只需要套个 block
+			// 2. 只有 goto 跳过去, 只需要 wrap 个 block
 			lbStmt.Stmt = &ast.BlockStmt{
 				List: []ast.Stmt{
 					lbStmt.Stmt,
