@@ -122,7 +122,7 @@ func HandleErrorf(err *error, format string, args ...any) {
 }
 ```
 
-## Translating
+## Translating Examples
 
 ### prelude
 
