@@ -25,6 +25,67 @@ func switch_underlying_nil() error {
 	return nil
 }
 
+func switch_fallthrough_copy(i int) (err error) {
+	type (
+		A = int
+		B = int
+		C = int
+		D = int
+		E = int
+	)
+	switch i {
+	case Try(ret1Err[A]()):
+		fallthrough
+	case Try(ret1Err[C]()):
+		fallthrough
+	case Try(ret1Err[D]()):
+		Try(ret1Err[E]())
+	}
+	return nil
+}
+
+func switch_fallthrough_copy1(i int) (err error) {
+	type (
+		A = int
+		B = int
+		C = int
+		D = int
+		E = int
+	)
+	switch i {
+	case Try(ret1Err[A]()):
+		fallthrough
+	case Try(ret1Err[C]()):
+		// fallthrough
+	case Try(ret1Err[D]()):
+		Try(ret1Err[E]())
+	}
+	return nil
+}
+
+func switch_fallthrough_copy2(i int) (err error) {
+	type (
+		A = int
+		B = int
+		C = int
+		D = int
+		E = int
+		F = int
+	)
+	switch i {
+	case Try(ret1Err[A]()):
+		Try(ret1Err[B]())
+		fallthrough
+	case Try(ret1Err[C]()):
+		Try(ret1Err[D]())
+		fallthrough
+	case Try(ret1Err[E]()):
+		Try(ret1Err[F]())
+	}
+
+	return nil
+}
+
 func switch_fallthrough() (err error) {
 	a := 1
 	switch a {

@@ -30,6 +30,185 @@ func switch_underlying_nil() error {
 	}
 	return nil
 }
+func switch_fallthrough_copy(i int) (err error) {
+	type (
+		A = int
+		B = int
+		C = int
+		D = int
+		E = int
+	)
+	{
+		𝘃𝗮𝗹𝟭 := i
+		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟭 := ret1Err[A]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			err = 𝗲𝗿𝗿𝟭
+			return
+		}
+		if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟮 {
+			_, 𝗲𝗿𝗿𝟮 := ret1Err[E]()
+			if 𝗲𝗿𝗿𝟮 != nil {
+				err = 𝗲𝗿𝗿𝟮
+				return
+			}
+
+		} else {
+			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[C]()
+			if 𝗲𝗿𝗿𝟯 != nil {
+				err = 𝗲𝗿𝗿𝟯
+				return
+			}
+			if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟯 {
+				_, 𝗲𝗿𝗿𝟰 := ret1Err[E]()
+				if 𝗲𝗿𝗿𝟰 != nil {
+					err = 𝗲𝗿𝗿𝟰
+					return
+				}
+
+			} else {
+				𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟱 := ret1Err[D]()
+				if 𝗲𝗿𝗿𝟱 != nil {
+					err = 𝗲𝗿𝗿𝟱
+					return
+				}
+				if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟰 {
+					_, 𝗲𝗿𝗿𝟲 := ret1Err[E]()
+					if 𝗲𝗿𝗿𝟲 != nil {
+						err = 𝗲𝗿𝗿𝟲
+						return
+					}
+
+				}
+			}
+		}
+	}
+	return nil
+}
+func switch_fallthrough_copy1(i int) (err error) {
+	type (
+		A = int
+		B = int
+		C = int
+		D = int
+		E = int
+	)
+	{
+		𝘃𝗮𝗹𝟭 := i
+		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟭 := ret1Err[A]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			err = 𝗲𝗿𝗿𝟭
+			return
+		}
+		if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟮 {
+		} else {
+			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟮 := ret1Err[C]()
+			if 𝗲𝗿𝗿𝟮 != nil {
+				err = 𝗲𝗿𝗿𝟮
+				return
+			}
+			if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟯 {
+			} else {
+				𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟯 := ret1Err[D]()
+				if 𝗲𝗿𝗿𝟯 != nil {
+					err = 𝗲𝗿𝗿𝟯
+					return
+				}
+				if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟰 {
+					_, 𝗲𝗿𝗿𝟰 := ret1Err[E]()
+					if 𝗲𝗿𝗿𝟰 != nil {
+						err = 𝗲𝗿𝗿𝟰
+						return
+					}
+
+				}
+			}
+		}
+	}
+	return nil
+}
+func switch_fallthrough_copy2(i int) (err error) {
+	type (
+		A = int
+		B = int
+		C = int
+		D = int
+		E = int
+		F = int
+	)
+	{
+		𝘃𝗮𝗹𝟭 := i
+		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟭 := ret1Err[A]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			err = 𝗲𝗿𝗿𝟭
+			return
+		}
+		if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟮 {
+			{
+				_, 𝗲𝗿𝗿𝟮 := ret1Err[B]()
+				if 𝗲𝗿𝗿𝟮 != nil {
+					err = 𝗲𝗿𝗿𝟮
+					return
+				}
+
+			}
+			{
+				_, 𝗲𝗿𝗿𝟯 := ret1Err[D]()
+				if 𝗲𝗿𝗿𝟯 != nil {
+					err = 𝗲𝗿𝗿𝟯
+					return
+				}
+
+			}
+			{
+				_, 𝗲𝗿𝗿𝟰 := ret1Err[F]()
+				if 𝗲𝗿𝗿𝟰 != nil {
+					err = 𝗲𝗿𝗿𝟰
+					return
+				}
+
+			}
+		} else {
+			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟱 := ret1Err[C]()
+			if 𝗲𝗿𝗿𝟱 != nil {
+				err = 𝗲𝗿𝗿𝟱
+				return
+			}
+			if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟯 {
+				{
+					_, 𝗲𝗿𝗿𝟲 := ret1Err[D]()
+					if 𝗲𝗿𝗿𝟲 != nil {
+						err = 𝗲𝗿𝗿𝟲
+						return
+					}
+
+				}
+				{
+					_, 𝗲𝗿𝗿𝟳 := ret1Err[F]()
+					if 𝗲𝗿𝗿𝟳 != nil {
+						err = 𝗲𝗿𝗿𝟳
+						return
+					}
+
+				}
+			} else {
+				𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟴 := ret1Err[E]()
+				if 𝗲𝗿𝗿𝟴 != nil {
+					err = 𝗲𝗿𝗿𝟴
+					return
+				}
+				if 𝘃𝗮𝗹𝟭 == 𝘃𝗮𝗹𝟰 {
+					_, 𝗲𝗿𝗿𝟵 := ret1Err[F]()
+					if 𝗲𝗿𝗿𝟵 != nil {
+						err = 𝗲𝗿𝗿𝟵
+						return
+					}
+
+				}
+			}
+		}
+	}
+	return nil
+}
 func switch_fallthrough() (err error) {
 	a := 1
 	{
