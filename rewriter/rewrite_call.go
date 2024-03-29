@@ -2,11 +2,10 @@ package rewriter
 
 import (
 	"fmt"
+	"github.com/goghcrow/go-loader"
 	"go/ast"
 	"go/token"
 	"go/types"
-
-	"github.com/goghcrow/go-loader"
 	"golang.org/x/tools/go/ast/astutil"
 )
 
@@ -68,7 +67,7 @@ func (r *fileRewriter) rewriteNonTryCall(ctx *rewriteCtx, n *ast.CallExpr) (ast.
 
 func (r *fileRewriter) rewriteTryCall(
 	ctx *rewriteCtx,
-	n *ast.CallExpr, // callsite
+	n *ast.CallExpr, // callSite
 	tryFn string,
 ) (v ast.Expr, extract []ast.Stmt) {
 	fn := r.checkAndGetEnclosingFn(ctx.fun, n)
@@ -176,7 +175,7 @@ func (r *fileRewriter) rewriteTryCall(
 
 func (r *fileRewriter) rewriteTryCallArgs(
 	ctx *rewriteCtx,
-	n *ast.CallExpr, // callsite
+	n *ast.CallExpr, // callSite
 	tryFn string,
 ) ([]ast.Expr, []ast.Stmt) {
 	// fast routine
@@ -225,7 +224,7 @@ func (r *fileRewriter) rewriteTryCallArgs(
 
 func (r *fileRewriter) checkAndGetEnclosingFn(
 	enFn fnNode,
-	callsitePos loader.Positioner,
+	callSitePos loader.Positioner,
 ) (fn *enclosingFn) {
 	fn = r.fnSig[enFn]
 	if fn != nil {
@@ -244,7 +243,7 @@ func (r *fileRewriter) checkAndGetEnclosingFn(
 		sig, _ = r.pkg.TypeOf(n.Name).(*types.Signature) // underlying?
 		fnTy = n.Type
 	case nil:
-		r.assert(callsitePos, false, "try must be called in the tryable func (return error in last position)")
+		r.assert(callSitePos, false, "try must be called in the tryable func (return error in last position)")
 	}
 
 	var retErr types.Type
@@ -253,7 +252,7 @@ func (r *fileRewriter) checkAndGetEnclosingFn(
 		retCnt := sig.Results().Len()
 		r.assert(fnTy, retCnt > 0, "expect at least one error return")
 		retErr = sig.Results().At(retCnt - 1).Type()
-		// r.assert(callsitePos, types.AssignableTo(retErr, errTy), "the last return type MUST assignable to error")
+		// r.assert(callSitePos, types.AssignableTo(retErr, errTy), "the last return type MUST assignable to error")
 		r.assert(fnTy, types.Identical(retErr, r.errTy), "the last result must be error, but %s", retErr)
 	}
 
@@ -281,7 +280,7 @@ func (r *fileRewriter) checkAndGetEnclosingFn(
 
 func (r *fileRewriter) checkTryCall(
 	fn *enclosingFn,
-	n *ast.CallExpr, // callsite
+	n *ast.CallExpr, // callSite
 	tryFn string,
 ) {
 	// 检查参数列表最后一个必须为 error

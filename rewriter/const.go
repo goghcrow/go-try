@@ -11,6 +11,7 @@ const (
 	valIdentPrefix     = "val"
 	errIdentPrefix     = "err"
 	valZeroIdentPrefix = "zero"
+	postIdentPrefix    = "post"
 
 	fileComment = `//go:build !%s
 
@@ -21,6 +22,7 @@ const (
 var (
 	funcTryNames = []string{"Try0", "Try", "Try2", "Try3"}
 	tupleNames   = []string{"Ø", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"}
+	errorName    = "E𝗿𝗿𝗼𝗿"
 )
 
 func retCntOfTryFn(tryFn string) int {

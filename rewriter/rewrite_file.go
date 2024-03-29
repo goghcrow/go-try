@@ -197,14 +197,15 @@ func (r *fileRewriter) containsTryCall(n ast.Node, _ mctx) bool {
 	return r.tryNodes[n]
 }
 
-func (r *fileRewriter) tryCallee(callsite *ast.CallExpr) string {
-	return r.tryFns[typeutil.Callee(r.pkg.TypesInfo, callsite)]
+func (r *fileRewriter) tryCallee(callSite *ast.CallExpr) string {
+	return r.tryFns[typeutil.Callee(r.pkg.TypesInfo, callSite)]
 }
 
 func (r *fileRewriter) mkSym(f fnNode, s string) *ast.Ident       { return r.symTbl(f).mk(s) }
 func (r *fileRewriter) genSym(f fnNode, prefix string) *ast.Ident { return r.symTbl(f).gen(prefix) }
 func (r *fileRewriter) genValId(f fnNode) *ast.Ident              { return r.symTbl(f).gen(valIdentPrefix) }
 func (r *fileRewriter) genErrId(f fnNode) *ast.Ident              { return r.symTbl(f).gen(errIdentPrefix) }
+func (r *fileRewriter) genPostId(f fnNode) *ast.Ident             { return r.symTbl(f).gen(postIdentPrefix) }
 
 func (r *fileRewriter) symTbl(f fnNode) symTbl {
 	sym := r.fnSyms[f]
@@ -219,9 +220,13 @@ type symTbl map[string]int
 
 func (r symTbl) gen(prefix string) *ast.Ident {
 	r[prefix]++
-	return ast.NewIdent(ansi.Transform("SansSerif-Bold", prefix+strconv.Itoa(r[prefix])))
+	return ast.NewIdent(transIdent(prefix + strconv.Itoa(r[prefix])))
 }
 
 func (r symTbl) mk(s string) *ast.Ident {
-	return ast.NewIdent(ansi.Transform("SansSerif-Bold", s))
+	return ast.NewIdent(transIdent(s))
+}
+
+func transIdent(s string) string {
+	return ansi.Transform("SansSerif-Bold", s)
 }

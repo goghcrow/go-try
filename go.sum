@@ -1,5 +1,7 @@
 github.com/goghcrow/go-ansi v1.0.1 h1:ltEkCF0dcongBrJ6dF2XB6pLf7R8gPdhqusQU5Q+5QM=
 github.com/goghcrow/go-ansi v1.0.1/go.mod h1:YbYHdqfxRRpBAuwz6ALgWOimYgL7L6pkZYFcDWNVNRE=
+github.com/goghcrow/go-imports v0.0.2 h1:O0rHwcrNG9l2NwO4M7tytzv8vDrhvlvuLFdSoVpKDR0=
+github.com/goghcrow/go-imports v0.0.2/go.mod h1:slrqmDs7/4xUoq0ygGkQ7CnE1xR04y7dwKBVr+J42ck=
 github.com/goghcrow/go-loader v0.0.4-0.20240221113906-cab11067771f h1:etw5MeYe81d/1Hae9iUBMYFGf9I6gD84NR38RbgAc28=
 github.com/goghcrow/go-loader v0.0.4-0.20240221113906-cab11067771f/go.mod h1:Jwk+b7diJUFjz5r/KQuhgb5+UuLSfoe6bb9XPTNp+Bs=
 github.com/goghcrow/go-loader v0.0.4-0.20240224131405-cf9823d42905 h1:Ym+avcZGDJuRSHAJkbfX2MtKQlpnSKBtaOECcyCid54=

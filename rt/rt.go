@@ -21,3 +21,5 @@ func IX[A, B, C, D, E, F, G, H, I any](a A, b B, c C, d D, e E, f F, g G, h H, i
 func X[A, B, C, D, E, F, G, H, I, J any](a A, b B, c C, d D, e E, f F, g G, h H, i I, j J) (A, B, C, D, E, F, G, H, I, J) {
 	return a, b, c, d, e, f, g, h, i, j
 }
+
+type E𝗿𝗿𝗼𝗿 = error

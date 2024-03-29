@@ -35,7 +35,7 @@ func optimize(l *loader.Loader, printer filePrinter) {
 		o.unwrapTuple(f)
 		o.unwrapTupleAssign(f)
 		o.mergeBlock(f)
-		o.clearImport(f)
+		//o.clearImport(f)
 		printer(f.Filename, f)
 	})
 }
