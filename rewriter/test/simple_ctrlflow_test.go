@@ -22,25 +22,21 @@ func swith1() error {
 		if 𝗲𝗿𝗿𝟮 != nil {
 			return 𝗲𝗿𝗿𝟮
 		}
-
 	case 1:
 		_, 𝗲𝗿𝗿𝟯 := ret1Err[B]()
 		if 𝗲𝗿𝗿𝟯 != nil {
 			return 𝗲𝗿𝗿𝟯
 		}
-
 	case 2:
 		_, _, 𝗲𝗿𝗿𝟰 := ret2Err[C, C]()
 		if 𝗲𝗿𝗿𝟰 != nil {
 			return 𝗲𝗿𝗿𝟰
 		}
-
 	case 3:
 		_, _, _, 𝗲𝗿𝗿𝟱 := ret3Err[D, D, D]()
 		if 𝗲𝗿𝗿𝟱 != nil {
 			return 𝗲𝗿𝗿𝟱
 		}
-
 	}
 	return nil
 }
@@ -66,25 +62,21 @@ func swith2() error {
 		if 𝗲𝗿𝗿𝟯 != nil {
 			return 𝗲𝗿𝗿𝟯
 		}
-
 	case b == 2:
 		_, 𝗲𝗿𝗿𝟰 := ret1Err[C]()
 		if 𝗲𝗿𝗿𝟰 != nil {
 			return 𝗲𝗿𝗿𝟰
 		}
-
 	case a == 3:
 		_, _, 𝗲𝗿𝗿𝟱 := ret2Err[D, D]()
 		if 𝗲𝗿𝗿𝟱 != nil {
 			return 𝗲𝗿𝗿𝟱
 		}
-
 	case b == 4:
 		_, _, _, 𝗲𝗿𝗿𝟲 := ret3Err[E, E, E]()
 		if 𝗲𝗿𝗿𝟲 != nil {
 			return 𝗲𝗿𝗿𝟲
 		}
-
 	}
 	return nil
 }
@@ -108,7 +100,6 @@ func if1() error {
 		if 𝗲𝗿𝗿𝟭 != nil {
 			return 𝗲𝗿𝗿𝟭
 		}
-
 		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟮 := ret1Err[A]()
 		if 𝗲𝗿𝗿𝟮 != nil {
 			return 𝗲𝗿𝗿𝟮
@@ -118,12 +109,12 @@ func if1() error {
 		if 𝗲𝗿𝗿𝟯 != nil {
 			return 𝗲𝗿𝗿𝟯
 		}
-		println(II(𝘃𝗮𝗹𝟮, 𝘃𝗮𝗹𝟯))
+		println(Ƭ2(𝘃𝗮𝗹𝟮, 𝘃𝗮𝗹𝟯))
 		𝘃𝗮𝗹𝟰, 𝘃𝗮𝗹𝟱, 𝘃𝗮𝗹𝟲, 𝗲𝗿𝗿𝟰 := ret3Err[C, string, rune]()
 		if 𝗲𝗿𝗿𝟰 != nil {
 			return 𝗲𝗿𝗿𝟰
 		}
-		println(III(𝘃𝗮𝗹𝟰, 𝘃𝗮𝗹𝟱, 𝘃𝗮𝗹𝟲))
+		println(Ƭ3(𝘃𝗮𝗹𝟰, 𝘃𝗮𝗹𝟱, 𝘃𝗮𝗹𝟲))
 	}
 	return nil
 }
@@ -138,7 +129,6 @@ func for1() error {
 		if 𝗲𝗿𝗿𝟭 != nil {
 			return 𝗲𝗿𝗿𝟭
 		}
-
 		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟮 := ret1Err[A]()
 		if 𝗲𝗿𝗿𝟮 != nil {
 			return 𝗲𝗿𝗿𝟮
@@ -148,12 +138,12 @@ func for1() error {
 		if 𝗲𝗿𝗿𝟯 != nil {
 			return 𝗲𝗿𝗿𝟯
 		}
-		println(II(𝘃𝗮𝗹𝟮, 𝘃𝗮𝗹𝟯))
+		println(Ƭ2(𝘃𝗮𝗹𝟮, 𝘃𝗮𝗹𝟯))
 		𝘃𝗮𝗹𝟰, 𝘃𝗮𝗹𝟱, 𝘃𝗮𝗹𝟲, 𝗲𝗿𝗿𝟰 := ret3Err[C, string, rune]()
 		if 𝗲𝗿𝗿𝟰 != nil {
 			return 𝗲𝗿𝗿𝟰
 		}
-		println(III(𝘃𝗮𝗹𝟰, 𝘃𝗮𝗹𝟱, 𝘃𝗮𝗹𝟲))
+		println(Ƭ3(𝘃𝗮𝗹𝟰, 𝘃𝗮𝗹𝟱, 𝘃𝗮𝗹𝟲))
 	}
 	return nil
 }

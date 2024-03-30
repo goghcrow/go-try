@@ -5,6 +5,7 @@ package test
 
 import (
 	"fmt"
+	. "github.com/goghcrow/go-try/rt"
 	"go/ast"
 )
 
@@ -395,12 +396,10 @@ func rewrite_mixed() error {
 		if 𝗲𝗿𝗿𝟱 != nil {
 			return 𝗲𝗿𝗿𝟱
 		}
-
 	}
 	return nil
 }
 func rewrite_if_init_cond() error {
-
 	{
 		n := 1
 		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := func1[int, bool](n)
@@ -410,7 +409,6 @@ func rewrite_if_init_cond() error {
 		if 𝘃𝗮𝗹𝟭 {
 		}
 	}
-
 	{
 		n := 0
 		{
@@ -448,6 +446,13 @@ func rewrite_if_init_cond() error {
 func rewrite_for_init_cond() error {
 	{
 		for i := 0; ; {
+			𝗽𝗼𝘀𝘁𝟭 := func() (_ E𝗿𝗿𝗼𝗿) {
+				_, 𝗲𝗿𝗿𝟭 := func1[int, int](i)
+				if 𝗲𝗿𝗿𝟭 != nil {
+					return 𝗲𝗿𝗿𝟭
+				}
+				return
+			}
 			𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := func1[int, bool](i)
 			if 𝗲𝗿𝗿𝟭 != nil {
 				return 𝗲𝗿𝗿𝟭
@@ -456,16 +461,22 @@ func rewrite_for_init_cond() error {
 				break
 			}
 			i++
-			_, 𝗲𝗿𝗿𝟮 := func1[int, int](i)
+			𝗲𝗿𝗿𝟮 := 𝗽𝗼𝘀𝘁𝟭()
 			if 𝗲𝗿𝗿𝟮 != nil {
 				return 𝗲𝗿𝗿𝟮
 			}
-
 		}
 	}
 	{
 		i := 0
 		for i := 0; ; {
+			𝗽𝗼𝘀𝘁𝟮 := func() (_ E𝗿𝗿𝗼𝗿) {
+				_, 𝗲𝗿𝗿𝟭 := func1[int, int](i)
+				if 𝗲𝗿𝗿𝟭 != nil {
+					return 𝗲𝗿𝗿𝟭
+				}
+				return
+			}
 			𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟯 := func1[int, bool](i)
 			if 𝗲𝗿𝗿𝟯 != nil {
 				return 𝗲𝗿𝗿𝟯
@@ -474,11 +485,10 @@ func rewrite_for_init_cond() error {
 				break
 			}
 			i++
-			_, 𝗲𝗿𝗿𝟰 := func1[int, int](i)
+			𝗲𝗿𝗿𝟰 := 𝗽𝗼𝘀𝘁𝟮()
 			if 𝗲𝗿𝗿𝟰 != nil {
 				return 𝗲𝗿𝗿𝟰
 			}
-
 		}
 		println(i)
 	}
@@ -489,6 +499,13 @@ func rewrite_for_init_cond() error {
 			return 𝗲𝗿𝗿𝟱
 		}
 		for i := 𝘃𝗮𝗹𝟯; ; {
+			𝗽𝗼𝘀𝘁𝟯 := func() (_ E𝗿𝗿𝗼𝗿) {
+				_, 𝗲𝗿𝗿𝟭 := func1[int, int](i)
+				if 𝗲𝗿𝗿𝟭 != nil {
+					return 𝗲𝗿𝗿𝟭
+				}
+				return
+			}
 			𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟲 := func1[int, bool](i)
 			if 𝗲𝗿𝗿𝟲 != nil {
 				return 𝗲𝗿𝗿𝟲
@@ -497,18 +514,16 @@ func rewrite_for_init_cond() error {
 				break
 			}
 			i++
-			_, 𝗲𝗿𝗿𝟳 := func1[int, int](i)
+			𝗲𝗿𝗿𝟳 := 𝗽𝗼𝘀𝘁𝟯()
 			if 𝗲𝗿𝗿𝟳 != nil {
 				return 𝗲𝗿𝗿𝟳
 			}
-
 		}
 		println(i)
 	}
 	return nil
 }
 func rewrite_typeswitch_init_assign() error {
-
 	{
 		n := 1
 		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := func1[int, fmt.Stringer](n)
@@ -518,7 +533,6 @@ func rewrite_typeswitch_init_assign() error {
 		switch 𝘃𝗮𝗹𝟭.(type) {
 		}
 	}
-
 	{
 		n := 0
 		{
@@ -556,7 +570,6 @@ func rewrite_typeswitch_init_assign() error {
 	return nil
 }
 func rewrite_switch_init_tag() error {
-
 	{
 		n := 1
 		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := func1[int, fmt.Stringer](n)
@@ -566,7 +579,6 @@ func rewrite_switch_init_tag() error {
 		switch 𝘃𝗮𝗹𝟭 {
 		}
 	}
-
 	{
 		n := 0
 		{

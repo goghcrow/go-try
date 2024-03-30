@@ -19,7 +19,7 @@ func (r *fileRewriter) tupleExpr(xs []ast.Expr) ast.Expr {
 	default:
 		r.importRT = true
 		return &ast.CallExpr{
-			Fun:  ast.NewIdent(tupleNames[len(xs)]),
+			Fun:  ast.NewIdent(rtTupleFnNames[len(xs)]),
 			Args: xs,
 		}
 	}

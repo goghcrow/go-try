@@ -38,7 +38,7 @@ func Rewrite(dir string, opts ...Option) {
 		isTryFile      = func(filename string) bool {
 			return endsWith(filename, srcFileSuffix) || endsWith(filename, testFileSuffix)
 		}
-		toOptzFile = map[string]bool{}
+		toOptimize = map[string]bool{}
 	)
 
 	rewrite(loader.MustNew(
@@ -52,9 +52,8 @@ func Rewrite(dir string, opts ...Option) {
 	), func(filename string, f *loader.File) {
 		filename = replace(filename, srcFileSuffix, ".go")
 		filename = replace(filename, testFileSuffix, "_test.go")
-		comment := fmt.Sprintf(fileComment, opt.buildTag)
-		f.WriteWithComment(filename, comment)
-		toOptzFile[filename] = true
+		f.Write(filename)
+		toOptimize[filename] = true
 	})
 
 	optimize(loader.MustNew(
@@ -63,10 +62,13 @@ func Rewrite(dir string, opts ...Option) {
 		loader.WithLoadTest(),
 		loader.WithBuildTag("!"+opt.buildTag),
 		loader.WithFileFilter(func(f *loader.File) bool {
-			return toOptzFile[f.Filename] && helper.Imported(f.File, pkgRTPath)
+			return toOptimize[f.Filename] // && helper.Imported(f.File, pkgRTPath)
 		}),
 	), func(filename string, f *loader.File) {
-		f.Write(filename)
+		// 延迟到最后全部修改完成再清理 pos 重新生成
+		loader.ClearPos(f.File)
+		comment := fmt.Sprintf(fileComment, opt.buildTag)
+		f.WriteWithComment(filename, comment)
 	})
 }
 
@@ -80,7 +82,7 @@ func rewrite(l *loader.Loader, printer filePrinter) {
 	}
 
 	tryFns := map[types.Object]fnName{}
-	for _, n := range funcTryNames {
+	for _, n := range tryFnNames {
 		tryFns[l.MustLookup(pkgTryPath+"."+n)] = n
 	}
 
@@ -90,7 +92,6 @@ func rewrite(l *loader.Loader, printer filePrinter) {
 		f.File = rewriteFile(tryFns, pkg, f.File) // 1. rewrite try call
 		f.File.Comments = nil                     // 2. delete comments
 		f.File.Doc = nil                          // 3. delete pkg doc
-		loader.ClearPos(f.File)                   // 4. clear position
-		printer(f.Filename, f)                    // 5. writeback
+		printer(f.Filename, f)                    // 4. write back
 	})
 }

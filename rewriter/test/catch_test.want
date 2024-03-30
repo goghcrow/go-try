@@ -13,7 +13,6 @@ func named_error() (a int, err error) {
 		err = 𝗲𝗿𝗿𝟭
 		return
 	}
-
 	a = 42
 	return
 }
@@ -29,7 +28,6 @@ func catch_and_log() (a int, err error) {
 		err = 𝗲𝗿𝗿𝟭
 		return
 	}
-
 	a = 42
 	return
 }
@@ -40,7 +38,6 @@ func error_wrapping() (a int, err error) {
 		err = 𝗲𝗿𝗿𝟭
 		return
 	}
-
 	a = 42
 	return
 }

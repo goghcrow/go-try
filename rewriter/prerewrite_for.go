@@ -255,7 +255,7 @@ func (r *fileRewriter) preRewriteForPost(ctx mctx, forStmt *ast.ForStmt, enclosi
 						// type error = int
 						// 𝗽𝗼𝘀𝘁𝟭 := func() (_ error) { ... }
 						// 所以这里 ref rt 中的 error 别名
-						Type: ast.NewIdent(errorName), // rt.E𝗿𝗿𝗼𝗿
+						Type: ast.NewIdent(rtErrorTyName), // rt.E𝗿𝗿𝗼𝗿
 					},
 				},
 			},
@@ -334,6 +334,7 @@ func (r *fileRewriter) preRewriteForPost(ctx mctx, forStmt *ast.ForStmt, enclosi
 			},
 		},
 	}
+
 	r.tryNodes[tryCallPost] = true
 	r.tryNodes[tryCallPost.X] = true
 
@@ -342,7 +343,7 @@ func (r *fileRewriter) preRewriteForPost(ctx mctx, forStmt *ast.ForStmt, enclosi
 	// todo mv 小函数 & assert
 	var try0Obj types.Object
 	for obj, name := range r.tryFns {
-		if funcTryNames[0] == name {
+		if tryFnNames[0] == name {
 			try0Obj = obj
 			break
 		}

@@ -7,38 +7,32 @@ import "go/ast"
 
 func init_expr_stmt() error {
 	{
-		{
-			id(42)
-			𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟭 != nil {
-				return 𝗲𝗿𝗿𝟭
-			}
-			if 𝘃𝗮𝗹𝟭 {
-			}
+		id(42)
+		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			return 𝗲𝗿𝗿𝟭
+		}
+		if 𝘃𝗮𝗹𝟭 {
 		}
 	}
 	{
-		{
-			id(42)
-			𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟮 != nil {
-				return 𝗲𝗿𝗿𝟮
-			}
-			switch 𝘃𝗮𝗹𝟮 {
-			}
+		id(42)
+		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟮 != nil {
+			return 𝗲𝗿𝗿𝟮
+		}
+		switch 𝘃𝗮𝗹𝟮 {
 		}
 	}
 	{
-		{
-			id(42)
-			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[ast.Node]()
-			if 𝗲𝗿𝗿𝟯 != nil {
-				return 𝗲𝗿𝗿𝟯
-			}
-			switch n := 𝘃𝗮𝗹𝟯.(type) {
-			default:
-				_ = n
-			}
+		id(42)
+		𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[ast.Node]()
+		if 𝗲𝗿𝗿𝟯 != nil {
+			return 𝗲𝗿𝗿𝟯
+		}
+		switch n := 𝘃𝗮𝗹𝟯.(type) {
+		default:
+			_ = n
 		}
 	}
 	{
@@ -57,38 +51,32 @@ func init_expr_stmt() error {
 func init_send_stmt() error {
 	var ch chan<- int
 	{
-		{
-			ch <- 42
-			𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟭 != nil {
-				return 𝗲𝗿𝗿𝟭
-			}
-			if 𝘃𝗮𝗹𝟭 {
-			}
+		ch <- 42
+		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			return 𝗲𝗿𝗿𝟭
+		}
+		if 𝘃𝗮𝗹𝟭 {
 		}
 	}
 	{
-		{
-			ch <- 42
-			𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟮 != nil {
-				return 𝗲𝗿𝗿𝟮
-			}
-			switch 𝘃𝗮𝗹𝟮 {
-			}
+		ch <- 42
+		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟮 != nil {
+			return 𝗲𝗿𝗿𝟮
+		}
+		switch 𝘃𝗮𝗹𝟮 {
 		}
 	}
 	{
-		{
-			ch <- 42
-			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[ast.Node]()
-			if 𝗲𝗿𝗿𝟯 != nil {
-				return 𝗲𝗿𝗿𝟯
-			}
-			switch n := 𝘃𝗮𝗹𝟯.(type) {
-			default:
-				_ = n
-			}
+		ch <- 42
+		𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[ast.Node]()
+		if 𝗲𝗿𝗿𝟯 != nil {
+			return 𝗲𝗿𝗿𝟯
+		}
+		switch n := 𝘃𝗮𝗹𝟯.(type) {
+		default:
+			_ = n
 		}
 	}
 	{
@@ -106,38 +94,32 @@ func init_send_stmt() error {
 }
 func init_incdec_stmt(i int) error {
 	{
-		{
-			i++
-			𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟭 != nil {
-				return 𝗲𝗿𝗿𝟭
-			}
-			if 𝘃𝗮𝗹𝟭 {
-			}
+		i++
+		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			return 𝗲𝗿𝗿𝟭
+		}
+		if 𝘃𝗮𝗹𝟭 {
 		}
 	}
 	{
-		{
-			i++
-			𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟮 != nil {
-				return 𝗲𝗿𝗿𝟮
-			}
-			switch 𝘃𝗮𝗹𝟮 {
-			}
+		i++
+		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟮 != nil {
+			return 𝗲𝗿𝗿𝟮
+		}
+		switch 𝘃𝗮𝗹𝟮 {
 		}
 	}
 	{
-		{
-			i++
-			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[ast.Node]()
-			if 𝗲𝗿𝗿𝟯 != nil {
-				return 𝗲𝗿𝗿𝟯
-			}
-			switch n := 𝘃𝗮𝗹𝟯.(type) {
-			default:
-				_ = n
-			}
+		i++
+		𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[ast.Node]()
+		if 𝗲𝗿𝗿𝟯 != nil {
+			return 𝗲𝗿𝗿𝟯
+		}
+		switch n := 𝘃𝗮𝗹𝟯.(type) {
+		default:
+			_ = n
 		}
 	}
 	{
@@ -155,42 +137,36 @@ func init_incdec_stmt(i int) error {
 }
 func init_assign_stmt() error {
 	{
-		{
-			i := 0
-			𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟭 != nil {
-				return 𝗲𝗿𝗿𝟭
-			}
-			if 𝘃𝗮𝗹𝟭 {
-				_ = i
-			}
+		i := 0
+		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			return 𝗲𝗿𝗿𝟭
+		}
+		if 𝘃𝗮𝗹𝟭 {
+			_ = i
 		}
 	}
 	{
-		{
-			i := 0
-			𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟮 != nil {
-				return 𝗲𝗿𝗿𝟮
-			}
-			switch 𝘃𝗮𝗹𝟮 {
-			default:
-				_ = i
-			}
+		i := 0
+		𝘃𝗮𝗹𝟮, 𝗲𝗿𝗿𝟮 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟮 != nil {
+			return 𝗲𝗿𝗿𝟮
+		}
+		switch 𝘃𝗮𝗹𝟮 {
+		default:
+			_ = i
 		}
 	}
 	{
-		{
-			i := 0
-			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[ast.Node]()
-			if 𝗲𝗿𝗿𝟯 != nil {
-				return 𝗲𝗿𝗿𝟯
-			}
-			switch n := 𝘃𝗮𝗹𝟯.(type) {
-			default:
-				_ = i
-				_ = n
-			}
+		i := 0
+		𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[ast.Node]()
+		if 𝗲𝗿𝗿𝟯 != nil {
+			return 𝗲𝗿𝗿𝟯
+		}
+		switch n := 𝘃𝗮𝗹𝟯.(type) {
+		default:
+			_ = i
+			_ = n
 		}
 	}
 	{

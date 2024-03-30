@@ -14,7 +14,6 @@ func emptyStmt() error {
 		if 𝗲𝗿𝗿𝟮 != nil {
 			return 𝗲𝗿𝗿𝟮
 		}
-
 	}
 	return nil
 }

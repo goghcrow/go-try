@@ -134,15 +134,13 @@ func index_assign_expr() error {
 func if_init_assign_expr() (err error) {
 	type X struct{ x int }
 	{
-		{
-			id[*X](nil).x = 42
-			𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟭 != nil {
-				err = 𝗲𝗿𝗿𝟭
-				return
-			}
-			if 𝘃𝗮𝗹𝟭 {
-			}
+		id[*X](nil).x = 42
+		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			err = 𝗲𝗿𝗿𝟭
+			return
+		}
+		if 𝘃𝗮𝗹𝟭 {
 		}
 	}
 	{
@@ -155,32 +153,28 @@ func if_init_assign_expr() (err error) {
 		}
 	}
 	{
-		{
-			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[*X]()
-			if 𝗲𝗿𝗿𝟯 != nil {
-				err = 𝗲𝗿𝗿𝟯
-				return
-			}
-			𝘃𝗮𝗹𝟯.x = 42
-			𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟰 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟰 != nil {
-				err = 𝗲𝗿𝗿𝟰
-				return
-			}
-			if 𝘃𝗮𝗹𝟰 {
-			}
+		𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[*X]()
+		if 𝗲𝗿𝗿𝟯 != nil {
+			err = 𝗲𝗿𝗿𝟯
+			return
+		}
+		𝘃𝗮𝗹𝟯.x = 42
+		𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟰 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟰 != nil {
+			err = 𝗲𝗿𝗿𝟰
+			return
+		}
+		if 𝘃𝗮𝗹𝟰 {
 		}
 	}
 	{
-		{
-			id[[]int](nil)[0] = 42
-			𝘃𝗮𝗹𝟱, 𝗲𝗿𝗿𝟱 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟱 != nil {
-				err = 𝗲𝗿𝗿𝟱
-				return
-			}
-			if 𝘃𝗮𝗹𝟱 {
-			}
+		id[[]int](nil)[0] = 42
+		𝘃𝗮𝗹𝟱, 𝗲𝗿𝗿𝟱 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟱 != nil {
+			err = 𝗲𝗿𝗿𝟱
+			return
+		}
+		if 𝘃𝗮𝗹𝟱 {
 		}
 	}
 	{
@@ -193,32 +187,28 @@ func if_init_assign_expr() (err error) {
 		}
 	}
 	{
-		{
-			𝘃𝗮𝗹𝟳, 𝗲𝗿𝗿𝟳 := ret1Err[[]int]()
-			if 𝗲𝗿𝗿𝟳 != nil {
-				err = 𝗲𝗿𝗿𝟳
-				return
-			}
-			𝘃𝗮𝗹𝟳[0] = 42
-			𝘃𝗮𝗹𝟴, 𝗲𝗿𝗿𝟴 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟴 != nil {
-				err = 𝗲𝗿𝗿𝟴
-				return
-			}
-			if 𝘃𝗮𝗹𝟴 {
-			}
+		𝘃𝗮𝗹𝟳, 𝗲𝗿𝗿𝟳 := ret1Err[[]int]()
+		if 𝗲𝗿𝗿𝟳 != nil {
+			err = 𝗲𝗿𝗿𝟳
+			return
+		}
+		𝘃𝗮𝗹𝟳[0] = 42
+		𝘃𝗮𝗹𝟴, 𝗲𝗿𝗿𝟴 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟴 != nil {
+			err = 𝗲𝗿𝗿𝟴
+			return
+		}
+		if 𝘃𝗮𝗹𝟴 {
 		}
 	}
 	{
-		{
-			map[int]string{}[0] = "hello"
-			𝘃𝗮𝗹𝟵, 𝗲𝗿𝗿𝟵 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟵 != nil {
-				err = 𝗲𝗿𝗿𝟵
-				return
-			}
-			if 𝘃𝗮𝗹𝟵 {
-			}
+		map[int]string{}[0] = "hello"
+		𝘃𝗮𝗹𝟵, 𝗲𝗿𝗿𝟵 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟵 != nil {
+			err = 𝗲𝗿𝗿𝟵
+			return
+		}
+		if 𝘃𝗮𝗹𝟵 {
 		}
 	}
 	{
@@ -231,20 +221,18 @@ func if_init_assign_expr() (err error) {
 		}
 	}
 	{
-		{
-			𝘃𝗮𝗹𝟭𝟭, 𝗲𝗿𝗿𝟭𝟭 := ret1Err[map[int]string]()
-			if 𝗲𝗿𝗿𝟭𝟭 != nil {
-				err = 𝗲𝗿𝗿𝟭𝟭
-				return
-			}
-			𝘃𝗮𝗹𝟭𝟭[0] = "hello"
-			𝘃𝗮𝗹𝟭𝟮, 𝗲𝗿𝗿𝟭𝟮 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟭𝟮 != nil {
-				err = 𝗲𝗿𝗿𝟭𝟮
-				return
-			}
-			if 𝘃𝗮𝗹𝟭𝟮 {
-			}
+		𝘃𝗮𝗹𝟭𝟭, 𝗲𝗿𝗿𝟭𝟭 := ret1Err[map[int]string]()
+		if 𝗲𝗿𝗿𝟭𝟭 != nil {
+			err = 𝗲𝗿𝗿𝟭𝟭
+			return
+		}
+		𝘃𝗮𝗹𝟭𝟭[0] = "hello"
+		𝘃𝗮𝗹𝟭𝟮, 𝗲𝗿𝗿𝟭𝟮 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟭𝟮 != nil {
+			err = 𝗲𝗿𝗿𝟭𝟮
+			return
+		}
+		if 𝘃𝗮𝗹𝟭𝟮 {
 		}
 	}
 	return nil
@@ -252,15 +240,13 @@ func if_init_assign_expr() (err error) {
 func switch_init_assign_expr() (err error) {
 	type X struct{ x int }
 	{
-		{
-			id[*X](nil).x = 42
-			𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟭 != nil {
-				err = 𝗲𝗿𝗿𝟭
-				return
-			}
-			switch 𝘃𝗮𝗹𝟭 {
-			}
+		id[*X](nil).x = 42
+		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			err = 𝗲𝗿𝗿𝟭
+			return
+		}
+		switch 𝘃𝗮𝗹𝟭 {
 		}
 	}
 	{
@@ -273,32 +259,28 @@ func switch_init_assign_expr() (err error) {
 		}
 	}
 	{
-		{
-			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[*X]()
-			if 𝗲𝗿𝗿𝟯 != nil {
-				err = 𝗲𝗿𝗿𝟯
-				return
-			}
-			𝘃𝗮𝗹𝟯.x = 42
-			𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟰 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟰 != nil {
-				err = 𝗲𝗿𝗿𝟰
-				return
-			}
-			switch 𝘃𝗮𝗹𝟰 {
-			}
+		𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[*X]()
+		if 𝗲𝗿𝗿𝟯 != nil {
+			err = 𝗲𝗿𝗿𝟯
+			return
+		}
+		𝘃𝗮𝗹𝟯.x = 42
+		𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟰 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟰 != nil {
+			err = 𝗲𝗿𝗿𝟰
+			return
+		}
+		switch 𝘃𝗮𝗹𝟰 {
 		}
 	}
 	{
-		{
-			id[[]int](nil)[0] = 42
-			𝘃𝗮𝗹𝟱, 𝗲𝗿𝗿𝟱 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟱 != nil {
-				err = 𝗲𝗿𝗿𝟱
-				return
-			}
-			switch 𝘃𝗮𝗹𝟱 {
-			}
+		id[[]int](nil)[0] = 42
+		𝘃𝗮𝗹𝟱, 𝗲𝗿𝗿𝟱 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟱 != nil {
+			err = 𝗲𝗿𝗿𝟱
+			return
+		}
+		switch 𝘃𝗮𝗹𝟱 {
 		}
 	}
 	{
@@ -311,32 +293,28 @@ func switch_init_assign_expr() (err error) {
 		}
 	}
 	{
-		{
-			𝘃𝗮𝗹𝟳, 𝗲𝗿𝗿𝟳 := ret1Err[[]int]()
-			if 𝗲𝗿𝗿𝟳 != nil {
-				err = 𝗲𝗿𝗿𝟳
-				return
-			}
-			𝘃𝗮𝗹𝟳[0] = 42
-			𝘃𝗮𝗹𝟴, 𝗲𝗿𝗿𝟴 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟴 != nil {
-				err = 𝗲𝗿𝗿𝟴
-				return
-			}
-			switch 𝘃𝗮𝗹𝟴 {
-			}
+		𝘃𝗮𝗹𝟳, 𝗲𝗿𝗿𝟳 := ret1Err[[]int]()
+		if 𝗲𝗿𝗿𝟳 != nil {
+			err = 𝗲𝗿𝗿𝟳
+			return
+		}
+		𝘃𝗮𝗹𝟳[0] = 42
+		𝘃𝗮𝗹𝟴, 𝗲𝗿𝗿𝟴 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟴 != nil {
+			err = 𝗲𝗿𝗿𝟴
+			return
+		}
+		switch 𝘃𝗮𝗹𝟴 {
 		}
 	}
 	{
-		{
-			map[int]string{}[0] = "hello"
-			𝘃𝗮𝗹𝟵, 𝗲𝗿𝗿𝟵 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟵 != nil {
-				err = 𝗲𝗿𝗿𝟵
-				return
-			}
-			switch 𝘃𝗮𝗹𝟵 {
-			}
+		map[int]string{}[0] = "hello"
+		𝘃𝗮𝗹𝟵, 𝗲𝗿𝗿𝟵 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟵 != nil {
+			err = 𝗲𝗿𝗿𝟵
+			return
+		}
+		switch 𝘃𝗮𝗹𝟵 {
 		}
 	}
 	{
@@ -349,20 +327,18 @@ func switch_init_assign_expr() (err error) {
 		}
 	}
 	{
-		{
-			𝘃𝗮𝗹𝟭𝟭, 𝗲𝗿𝗿𝟭𝟭 := ret1Err[map[int]string]()
-			if 𝗲𝗿𝗿𝟭𝟭 != nil {
-				err = 𝗲𝗿𝗿𝟭𝟭
-				return
-			}
-			𝘃𝗮𝗹𝟭𝟭[0] = "hello"
-			𝘃𝗮𝗹𝟭𝟮, 𝗲𝗿𝗿𝟭𝟮 := ret1Err[bool]()
-			if 𝗲𝗿𝗿𝟭𝟮 != nil {
-				err = 𝗲𝗿𝗿𝟭𝟮
-				return
-			}
-			switch 𝘃𝗮𝗹𝟭𝟮 {
-			}
+		𝘃𝗮𝗹𝟭𝟭, 𝗲𝗿𝗿𝟭𝟭 := ret1Err[map[int]string]()
+		if 𝗲𝗿𝗿𝟭𝟭 != nil {
+			err = 𝗲𝗿𝗿𝟭𝟭
+			return
+		}
+		𝘃𝗮𝗹𝟭𝟭[0] = "hello"
+		𝘃𝗮𝗹𝟭𝟮, 𝗲𝗿𝗿𝟭𝟮 := ret1Err[bool]()
+		if 𝗲𝗿𝗿𝟭𝟮 != nil {
+			err = 𝗲𝗿𝗿𝟭𝟮
+			return
+		}
+		switch 𝘃𝗮𝗹𝟭𝟮 {
 		}
 	}
 	return nil
@@ -370,17 +346,15 @@ func switch_init_assign_expr() (err error) {
 func type_switch_init_assign_expr() (err error) {
 	type X struct{ x int }
 	{
-		{
-			id[*X](nil).x = 42
-			𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[ast.Node]()
-			if 𝗲𝗿𝗿𝟭 != nil {
-				err = 𝗲𝗿𝗿𝟭
-				return
-			}
-			switch n := 𝘃𝗮𝗹𝟭.(type) {
-			default:
-				_ = n
-			}
+		id[*X](nil).x = 42
+		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := ret1Err[ast.Node]()
+		if 𝗲𝗿𝗿𝟭 != nil {
+			err = 𝗲𝗿𝗿𝟭
+			return
+		}
+		switch n := 𝘃𝗮𝗹𝟭.(type) {
+		default:
+			_ = n
 		}
 	}
 	{
@@ -395,36 +369,32 @@ func type_switch_init_assign_expr() (err error) {
 		}
 	}
 	{
-		{
-			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[*X]()
-			if 𝗲𝗿𝗿𝟯 != nil {
-				err = 𝗲𝗿𝗿𝟯
-				return
-			}
-			𝘃𝗮𝗹𝟯.x = 42
-			𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟰 := ret1Err[ast.Node]()
-			if 𝗲𝗿𝗿𝟰 != nil {
-				err = 𝗲𝗿𝗿𝟰
-				return
-			}
-			switch n := 𝘃𝗮𝗹𝟰.(type) {
-			default:
-				_ = n
-			}
+		𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[*X]()
+		if 𝗲𝗿𝗿𝟯 != nil {
+			err = 𝗲𝗿𝗿𝟯
+			return
+		}
+		𝘃𝗮𝗹𝟯.x = 42
+		𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟰 := ret1Err[ast.Node]()
+		if 𝗲𝗿𝗿𝟰 != nil {
+			err = 𝗲𝗿𝗿𝟰
+			return
+		}
+		switch n := 𝘃𝗮𝗹𝟰.(type) {
+		default:
+			_ = n
 		}
 	}
 	{
-		{
-			id[[]int](nil)[0] = 42
-			𝘃𝗮𝗹𝟱, 𝗲𝗿𝗿𝟱 := ret1Err[ast.Node]()
-			if 𝗲𝗿𝗿𝟱 != nil {
-				err = 𝗲𝗿𝗿𝟱
-				return
-			}
-			switch n := 𝘃𝗮𝗹𝟱.(type) {
-			default:
-				_ = n
-			}
+		id[[]int](nil)[0] = 42
+		𝘃𝗮𝗹𝟱, 𝗲𝗿𝗿𝟱 := ret1Err[ast.Node]()
+		if 𝗲𝗿𝗿𝟱 != nil {
+			err = 𝗲𝗿𝗿𝟱
+			return
+		}
+		switch n := 𝘃𝗮𝗹𝟱.(type) {
+		default:
+			_ = n
 		}
 	}
 	{
@@ -439,36 +409,32 @@ func type_switch_init_assign_expr() (err error) {
 		}
 	}
 	{
-		{
-			𝘃𝗮𝗹𝟳, 𝗲𝗿𝗿𝟳 := ret1Err[[]int]()
-			if 𝗲𝗿𝗿𝟳 != nil {
-				err = 𝗲𝗿𝗿𝟳
-				return
-			}
-			𝘃𝗮𝗹𝟳[0] = 42
-			𝘃𝗮𝗹𝟴, 𝗲𝗿𝗿𝟴 := ret1Err[ast.Node]()
-			if 𝗲𝗿𝗿𝟴 != nil {
-				err = 𝗲𝗿𝗿𝟴
-				return
-			}
-			switch n := 𝘃𝗮𝗹𝟴.(type) {
-			default:
-				_ = n
-			}
+		𝘃𝗮𝗹𝟳, 𝗲𝗿𝗿𝟳 := ret1Err[[]int]()
+		if 𝗲𝗿𝗿𝟳 != nil {
+			err = 𝗲𝗿𝗿𝟳
+			return
+		}
+		𝘃𝗮𝗹𝟳[0] = 42
+		𝘃𝗮𝗹𝟴, 𝗲𝗿𝗿𝟴 := ret1Err[ast.Node]()
+		if 𝗲𝗿𝗿𝟴 != nil {
+			err = 𝗲𝗿𝗿𝟴
+			return
+		}
+		switch n := 𝘃𝗮𝗹𝟴.(type) {
+		default:
+			_ = n
 		}
 	}
 	{
-		{
-			map[int]string{}[0] = "hello"
-			𝘃𝗮𝗹𝟵, 𝗲𝗿𝗿𝟵 := ret1Err[ast.Node]()
-			if 𝗲𝗿𝗿𝟵 != nil {
-				err = 𝗲𝗿𝗿𝟵
-				return
-			}
-			switch n := 𝘃𝗮𝗹𝟵.(type) {
-			default:
-				_ = n
-			}
+		map[int]string{}[0] = "hello"
+		𝘃𝗮𝗹𝟵, 𝗲𝗿𝗿𝟵 := ret1Err[ast.Node]()
+		if 𝗲𝗿𝗿𝟵 != nil {
+			err = 𝗲𝗿𝗿𝟵
+			return
+		}
+		switch n := 𝘃𝗮𝗹𝟵.(type) {
+		default:
+			_ = n
 		}
 	}
 	{
@@ -483,22 +449,20 @@ func type_switch_init_assign_expr() (err error) {
 		}
 	}
 	{
-		{
-			𝘃𝗮𝗹𝟭𝟭, 𝗲𝗿𝗿𝟭𝟭 := ret1Err[map[int]string]()
-			if 𝗲𝗿𝗿𝟭𝟭 != nil {
-				err = 𝗲𝗿𝗿𝟭𝟭
-				return
-			}
-			𝘃𝗮𝗹𝟭𝟭[0] = "hello"
-			𝘃𝗮𝗹𝟭𝟮, 𝗲𝗿𝗿𝟭𝟮 := ret1Err[ast.Node]()
-			if 𝗲𝗿𝗿𝟭𝟮 != nil {
-				err = 𝗲𝗿𝗿𝟭𝟮
-				return
-			}
-			switch n := 𝘃𝗮𝗹𝟭𝟮.(type) {
-			default:
-				_ = n
-			}
+		𝘃𝗮𝗹𝟭𝟭, 𝗲𝗿𝗿𝟭𝟭 := ret1Err[map[int]string]()
+		if 𝗲𝗿𝗿𝟭𝟭 != nil {
+			err = 𝗲𝗿𝗿𝟭𝟭
+			return
+		}
+		𝘃𝗮𝗹𝟭𝟭[0] = "hello"
+		𝘃𝗮𝗹𝟭𝟮, 𝗲𝗿𝗿𝟭𝟮 := ret1Err[ast.Node]()
+		if 𝗲𝗿𝗿𝟭𝟮 != nil {
+			err = 𝗲𝗿𝗿𝟭𝟮
+			return
+		}
+		switch n := 𝘃𝗮𝗹𝟭𝟮.(type) {
+		default:
+			_ = n
 		}
 	}
 	return nil

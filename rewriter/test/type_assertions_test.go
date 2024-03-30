@@ -88,14 +88,12 @@ func type_assertions() error {
 		}
 	}
 	{
-		{
-			n := 1
-			𝘃𝗮𝗹𝟭𝟮, 𝗲𝗿𝗿𝟭𝟬 := func1[int, fmt.Stringer](n)
-			if 𝗲𝗿𝗿𝟭𝟬 != nil {
-				return 𝗲𝗿𝗿𝟭𝟬
-			}
-			switch 𝘃𝗮𝗹𝟭𝟮.(type) {
-			}
+		n := 1
+		𝘃𝗮𝗹𝟭𝟮, 𝗲𝗿𝗿𝟭𝟬 := func1[int, fmt.Stringer](n)
+		if 𝗲𝗿𝗿𝟭𝟬 != nil {
+			return 𝗲𝗿𝗿𝟭𝟬
+		}
+		switch 𝘃𝗮𝗹𝟭𝟮.(type) {
 		}
 	}
 	return nil

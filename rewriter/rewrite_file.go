@@ -97,6 +97,7 @@ func (r *fileRewriter) rewriteFile() {
 func (r *fileRewriter) postRewriteImport() {
 	helper.DeleteImport(r.pkg.Fset, r.f, pkgTryPath)
 	if r.importRT {
+		// rt.go 中 exported 符号均为非 ascii 字符, 默认不会冲突
 		astutil.AddNamedImport(r.pkg.Fset, r.f, ".", pkgRTPath)
 	}
 }

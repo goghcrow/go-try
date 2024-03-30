@@ -51,7 +51,6 @@ func switch_fallthrough_copy(i int) (err error) {
 				err = 𝗲𝗿𝗿𝟮
 				return
 			}
-
 		} else {
 			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟯 := ret1Err[C]()
 			if 𝗲𝗿𝗿𝟯 != nil {
@@ -64,7 +63,6 @@ func switch_fallthrough_copy(i int) (err error) {
 					err = 𝗲𝗿𝗿𝟰
 					return
 				}
-
 			} else {
 				𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟱 := ret1Err[D]()
 				if 𝗲𝗿𝗿𝟱 != nil {
@@ -77,7 +75,6 @@ func switch_fallthrough_copy(i int) (err error) {
 						err = 𝗲𝗿𝗿𝟲
 						return
 					}
-
 				}
 			}
 		}
@@ -119,7 +116,6 @@ func switch_fallthrough_copy1(i int) (err error) {
 						err = 𝗲𝗿𝗿𝟰
 						return
 					}
-
 				}
 			}
 		}
@@ -149,7 +145,6 @@ func switch_fallthrough_copy2(i int) (err error) {
 					err = 𝗲𝗿𝗿𝟮
 					return
 				}
-
 			}
 			{
 				_, 𝗲𝗿𝗿𝟯 := ret1Err[D]()
@@ -157,7 +152,6 @@ func switch_fallthrough_copy2(i int) (err error) {
 					err = 𝗲𝗿𝗿𝟯
 					return
 				}
-
 			}
 			{
 				_, 𝗲𝗿𝗿𝟰 := ret1Err[F]()
@@ -165,7 +159,6 @@ func switch_fallthrough_copy2(i int) (err error) {
 					err = 𝗲𝗿𝗿𝟰
 					return
 				}
-
 			}
 		} else {
 			𝘃𝗮𝗹𝟯, 𝗲𝗿𝗿𝟱 := ret1Err[C]()
@@ -180,7 +173,6 @@ func switch_fallthrough_copy2(i int) (err error) {
 						err = 𝗲𝗿𝗿𝟲
 						return
 					}
-
 				}
 				{
 					_, 𝗲𝗿𝗿𝟳 := ret1Err[F]()
@@ -188,7 +180,6 @@ func switch_fallthrough_copy2(i int) (err error) {
 						err = 𝗲𝗿𝗿𝟳
 						return
 					}
-
 				}
 			} else {
 				𝘃𝗮𝗹𝟰, 𝗲𝗿𝗿𝟴 := ret1Err[E]()
@@ -202,7 +193,6 @@ func switch_fallthrough_copy2(i int) (err error) {
 						err = 𝗲𝗿𝗿𝟵
 						return
 					}
-
 				}
 			}
 		}
@@ -719,7 +709,6 @@ L:
 				}
 			}
 		}
-
 	}
 	return nil
 }
@@ -875,7 +864,6 @@ func switch_labeled_fallthrough() error {
 }
 func switch_mixed() error {
 𝗟_𝗚𝗼𝘁𝗼_𝗟𝟭:
-
 	{
 		𝘃𝗮𝗹𝟭, 𝗲𝗿𝗿𝟭 := func1[int, A](0)
 		if 𝗲𝗿𝗿𝟭 != nil {
@@ -949,6 +937,5 @@ func switch_mixed() error {
 		}
 	𝗟_𝗕𝗿𝗸𝗧𝗼_𝗟𝟭:
 	}
-
 	goto 𝗟_𝗚𝗼𝘁𝗼_𝗟𝟭
 }

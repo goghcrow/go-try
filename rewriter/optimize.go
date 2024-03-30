@@ -13,16 +13,18 @@ import (
 )
 
 type optimizer struct {
-	m     *matcher.Matcher
-	rtFns []types.Object
+	m          *matcher.Matcher
+	rtTupleFns []types.Object
+	rtErrorTy  types.Object
 }
 
 func optimize(l *loader.Loader, printer filePrinter) {
 	o := &optimizer{
 		m: matcher.New(),
-		rtFns: sliceMap(tupleNames, func(i int, n string) types.Object {
+		rtTupleFns: sliceMap(rtTupleFnNames, func(i int, n string) types.Object {
 			return l.Lookup(pkgRTPath + "." + n)
 		}),
+		rtErrorTy: l.Lookup(pkgRTPath + "." + rtErrorTyName),
 	}
 	rtPkg := l.LookupPackage(pkgRTPath)
 	if rtPkg == nil {
@@ -35,7 +37,7 @@ func optimize(l *loader.Loader, printer filePrinter) {
 		o.unwrapTuple(f)
 		o.unwrapTupleAssign(f)
 		o.mergeBlock(f)
-		//o.clearImport(f)
+		o.clearImport(f)
 		printer(f.Filename, f)
 	})
 }
@@ -45,7 +47,7 @@ func (r *optimizer) unwrapTuple(f *loader.File) {
 	ptn := combinator.CalleeOf(r.m, func(ctx *combinator.MatchCtx, f types.Object) bool {
 		n := ctx.Stack[0].(*ast.CallExpr)
 		if _, ok := ctx.Stack[1].(*ast.ExprStmt); !ok {
-			for _, it := range r.rtFns[1:] {
+			for _, it := range r.rtTupleFns[1:] {
 				if it != nil && f == it {
 					return n.Ellipsis == token.NoPos && len(n.Args) == 1
 				}
@@ -59,7 +61,7 @@ func (r *optimizer) unwrapTuple(f *loader.File) {
 }
 
 func (r *optimizer) clearEmptyStmt(f *loader.File) {
-	if r.rtFns[0] == nil {
+	if r.rtTupleFns[0] == nil {
 		return
 	}
 	type (
@@ -68,7 +70,7 @@ func (r *optimizer) clearEmptyStmt(f *loader.File) {
 	)
 	// 可以手写一个 pass 移除
 	Ø := &ast.ExprStmt{X: combinator.CalleeOf(r.m, func(ctx *combinator.MatchCtx, o types.Object) bool {
-		return o == r.rtFns[0]
+		return o == r.rtTupleFns[0]
 	})}
 	r.m.Match(f.Pkg, Ø, f.File, func(c *cur, ctx *ctx) {
 		if c.Index() >= 0 {
@@ -96,9 +98,9 @@ func (r *optimizer) clearEmptyStmt(f *loader.File) {
 }
 
 func (r *optimizer) unwrapTupleAssign(f *loader.File) {
-	// iV := I(𝘃𝗮𝗹𝟮) // unwrapTuple 已经处理
-	// iV, bV := II(𝘃𝗮𝗹𝟮, 𝘃𝗮𝗹𝟯)
-	// iV, bV, sV := III(𝘃𝗮𝗹𝟮, 𝘃𝗮𝗹𝟯, 𝘃𝗮𝗹𝟰)
+	// iV := T1(𝘃𝗮𝗹𝟮) // unwrapTuple 已经处理
+	// iV, bV := T2(𝘃𝗮𝗹𝟮, 𝘃𝗮𝗹𝟯)
+	// iV, bV, sV := T3(𝘃𝗮𝗹𝟮, 𝘃𝗮𝗹𝟯, 𝘃𝗮𝗹𝟰)
 	// ...
 
 	assignOrDef := matcher.MkPattern[matcher.TokenPattern](r.m, func(n ast.Node, ctx *matcher.MatchCtx) bool {
@@ -108,8 +110,8 @@ func (r *optimizer) unwrapTupleAssign(f *loader.File) {
 	tupleAssign := matcher.MkPattern[matcher.NodePattern](r.m, func(n ast.Node, ctx *matcher.MatchCtx) bool {
 		return false
 	})
-	for i := 2; i < len(r.rtFns); i++ {
-		if r.rtFns[i] == nil {
+	for i := 2; i < len(r.rtTupleFns); i++ {
+		if r.rtTupleFns[i] == nil {
 			continue
 		}
 		j := i
@@ -120,7 +122,7 @@ func (r *optimizer) unwrapTupleAssign(f *loader.File) {
 				Tok: assignOrDef,
 				Rhs: []ast.Expr{
 					combinator.CalleeOf(r.m, func(ctx *combinator.MatchCtx, f types.Object) bool {
-						return f == r.rtFns[j]
+						return f == r.rtTupleFns[j]
 					}),
 				},
 			},
@@ -138,7 +140,7 @@ func (r *optimizer) unwrapTupleAssign(f *loader.File) {
 }
 
 func (r *optimizer) mergeBlock(f *loader.File) {
-	// for preRewriteLable + preRewriteSwitch
+	// for preRewriteLabel + preRewriteSwitch
 	r.m.Match(f.Pkg, &ast.BlockStmt{
 		List: []ast.Stmt{
 			&ast.BlockStmt{},
@@ -150,12 +152,19 @@ func (r *optimizer) mergeBlock(f *loader.File) {
 }
 
 func (r *optimizer) clearImport(f *loader.File) {
-	rtCall := combinator.CalleeOf(r.m, func(ctx *combinator.MatchCtx, f types.Object) bool {
-		return findFirst(r.rtFns, func(rtF types.Object) bool {
-			return rtF != nil && rtF == f
-		}) != nil
-	})
-	if !r.m.Matched(f.Pkg, rtCall, f.File) {
+	rtPtn := combinator.OrEx[matcher.NodePattern](r.m,
+		combinator.CalleeOf(r.m, func(ctx *combinator.MatchCtx, f types.Object) bool {
+			return findFirst(r.rtTupleFns, func(rtF types.Object) bool { return rtF == f }) != nil
+		}),
+		&ast.Field{
+			Type: combinator.AndEx[matcher.ExprPattern](r.m, &ast.Ident{
+				Name: rtErrorTyName,
+			}, combinator.ObjectOf(r.m, func(ctx *combinator.MatchCtx, obj types.Object) bool {
+				return r.rtErrorTy == obj
+			})),
+		},
+	)
+	if !r.m.Matched(f.Pkg, rtPtn, f.File) {
 		helper.DeleteImport(f.Pkg.Fset, f.File, pkgRTPath)
 	}
 }

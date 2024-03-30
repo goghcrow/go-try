@@ -289,7 +289,7 @@ func (r *fileRewriter) checkTryCall(
 	// Try(v1, v2, err) 		OR 		func F() (A, B, error); 	Try(F())
 	// Try(v1, v2, v3, err) 	OR 		func F() (A, B, C, error); 	Try(F())
 	var argErr types.Type
-	for i, name := range funcTryNames {
+	for i, name := range tryFnNames {
 		lastParam, paramCnt := i, i+1
 		if tryFn == name {
 			argCnt := len(n.Args)

@@ -1116,7 +1116,7 @@ func testSwitchStmt() (err error) {
 		}
 	}
 	assert(fired, "var")
-	𝘃𝗮𝗹𝟭𝟬𝟭, 𝗲𝗿𝗿𝟴𝟭 := lit(func() {  })
+	𝘃𝗮𝗹𝟭𝟬𝟭, 𝗲𝗿𝗿𝟴𝟭 := lit(func() {})
 	if 𝗲𝗿𝗿𝟴𝟭 != nil {
 		err = 𝗲𝗿𝗿𝟴𝟭
 		return
