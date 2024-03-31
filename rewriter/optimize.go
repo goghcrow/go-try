@@ -152,10 +152,12 @@ func (r *optimizer) mergeBlock(f *loader.File) {
 }
 
 func (r *optimizer) clearImport(f *loader.File) {
-	rtPtn := combinator.OrEx[matcher.NodePattern](r.m,
+	rtUsedPtn := combinator.OrEx[matcher.NodePattern](r.m,
+		// rt.Txxx() 函数调用
 		combinator.CalleeOf(r.m, func(ctx *combinator.MatchCtx, f types.Object) bool {
 			return findFirst(r.rtTupleFns, func(rtF types.Object) bool { return rtF == f }) != nil
 		}),
+		// rt.Error 类型引用
 		&ast.Field{
 			Type: combinator.AndEx[matcher.ExprPattern](r.m, &ast.Ident{
 				Name: rtErrorTyName,
@@ -164,7 +166,7 @@ func (r *optimizer) clearImport(f *loader.File) {
 			})),
 		},
 	)
-	if !r.m.Matched(f.Pkg, rtPtn, f.File) {
+	if !r.m.Matched(f.Pkg, rtUsedPtn, f.File) {
 		helper.DeleteImport(f.Pkg.Fset, f.File, pkgRTPath)
 	}
 }

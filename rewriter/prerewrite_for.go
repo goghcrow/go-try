@@ -1,11 +1,11 @@
 package rewriter
 
 import (
-	"github.com/goghcrow/go-imports"
 	"go/ast"
 	"go/token"
 	"go/types"
 
+	"github.com/goghcrow/go-imports"
 	"github.com/goghcrow/go-matcher"
 	"github.com/goghcrow/go-matcher/combinator"
 )
@@ -31,7 +31,7 @@ func (r *fileRewriter) preRewriteFor() {
 		if r.tryNodes[forStmt.Post] {
 			enclosing := ctx.EnclosingFunc()
 			assert(enclosing != nil)
-			r.preRewriteForPost(ctx, forStmt, enclosing)
+			r.preRewriteForPost(forStmt, enclosing)
 		}
 	})
 }
@@ -62,7 +62,7 @@ func (r *fileRewriter) preRewriteForCond(forStmt *ast.ForStmt) {
 	r.tryNodes[forStmt.Body] = true
 }
 
-func (r *fileRewriter) preRewriteForPost(ctx mctx, forStmt *ast.ForStmt, enclosingFn fnNode) {
+func (r *fileRewriter) preRewriteForPost(forStmt *ast.ForStmt, enclosingFn fnNode) {
 	// golang post 只支持 simple stmt
 	// 无法表达 try 的展开形式 (需要支持 block expr {...})
 	// 所以, 如果 post 包含 try 调用, 也需要参照 cond 改写位置并保持语义
@@ -208,6 +208,7 @@ func (r *fileRewriter) preRewriteForPost(ctx mctx, forStmt *ast.ForStmt, enclosi
 	//
 	// 所以, 不能直接复制 post 代码, 而是需要保持 post scope 的同时, 复制 post 的计算
 	// 所以, 需要把包含 try 的 for-post 打包成作用域正确的闭包放到 for-body 开头, 并在需要复制 post 的地方调用闭包执行 post
+	//
 	// ==> ✅
 	// for a := 1; a > 0; {
 	//		𝗽𝗼𝘀𝘁𝟭 := func() error {
@@ -236,126 +237,15 @@ func (r *fileRewriter) preRewriteForPost(ctx mctx, forStmt *ast.ForStmt, enclosi
 	//		}
 	//	}
 
-	r.importRT = true // for rt.𝗘𝗿𝗿𝗼𝗿
+	varPostFn, postFnAssign := r.mkPostFnLit(forStmt.Post, enclosingFn)
+	tryCallPost := r.mkTryCallPost(varPostFn)
 
-	post := forStmt.Post
 	forStmt.Post = nil
-
-	varPostFn := r.genPostId(enclosingFn)
-	postFnLit := &ast.FuncLit{ // try!
-		Type: &ast.FuncType{
-			Params: &ast.FieldList{},
-			Results: &ast.FieldList{
-				List: []*ast.Field{
-					{
-						// 这里 func() (_ error) {} 处理成 _ 是为了 body 最后不用 return nil
-						// 从而避免检查 nil 是否 shadow
-						Names: []*ast.Ident{ast.NewIdent("_")},
-						// error 可能被 shadow 重新定义, e.g.
-						// type error = int
-						// 𝗽𝗼𝘀𝘁𝟭 := func() (_ error) { ... }
-						// 所以这里 ref rt 中的 error 别名
-						Type: ast.NewIdent(rtErrorTyName), // rt.E𝗿𝗿𝗼𝗿
-					},
-				},
-			},
-		},
-		Body: &ast.BlockStmt{ // try!
-			List: []ast.Stmt{
-				post, // try!
-				&ast.ReturnStmt{ /*Results: []ast.Expr{ ast.NewIdent("nil") }*/ },
-			},
-		},
-	}
-	postFnAssign := &ast.AssignStmt{ // try!
-		Lhs: []ast.Expr{varPostFn},
-		Tok: token.DEFINE,
-		Rhs: []ast.Expr{
-			postFnLit,
-		},
-	}
-
-	r.tryNodes[postFnLit] = true
-	r.tryNodes[postFnLit.Body] = true
-	r.tryNodes[postFnAssign] = true
-
-	postFnSig := types.NewSignatureType(
-		nil,
-		nil,
-		nil,
-		nil,
-		types.NewTuple(types.NewVar(
-			token.NoPos,
-			r.pkg.Types,
-			"",
-			r.errTy,
-		)),
-		false,
-	)
-	r.pkg.UpdateType(varPostFn, postFnSig)
-	r.pkg.UpdateType(postFnLit, postFnSig)
-
 	forStmt.Body.List = prepend[ast.Stmt](forStmt.Body.List, postFnAssign)
-
-	// 不能展开成 err:=post();  if err != nil { return err } 形式
-	// 需要处理 defer err 的逻辑, 放到 rewrite 阶段统一处理
-	// 但是带来另一个问题, 新生成的代码需要标记
-	// 1. tryNode 信息, 后续 rewrite 会使用
-	// 2. caller 节点需要更新类型信息, 后续 rewrite 会使用
-	//
-	// try.Try0(post())
-
-	var try0 ast.Expr
-	try0Id := ast.NewIdent("Try0")
-	x := imports.ImportSpec(r.f, pkgTryPath).Name
-	switch {
-	case x == nil:
-		// todo try 可能被重新定义了 !!!
-		try0 = &ast.SelectorExpr{
-			X:   ast.NewIdent("try"),
-			Sel: try0Id,
-		}
-	case x.Name == ".":
-		// todo Try0 可能被重新定义了 !!!
-		try0 = try0Id
-	default:
-		try0 = &ast.SelectorExpr{
-			X:   ast.NewIdent(x.Name),
-			Sel: try0Id,
-		}
-	}
-
-	callPost := &ast.CallExpr{Fun: varPostFn}
-	tryCallPost := &ast.ExprStmt{
-		X: &ast.CallExpr{
-			Fun: try0,
-			Args: []ast.Expr{
-				callPost,
-			},
-		},
-	}
-
-	r.tryNodes[tryCallPost] = true
-	r.tryNodes[tryCallPost.X] = true
-
-	r.pkg.UpdateType(callPost, r.errTy)
-
-	// todo mv 小函数 & assert
-	var try0Obj types.Object
-	for obj, name := range r.tryFns {
-		if tryFnNames[0] == name {
-			try0Obj = obj
-			break
-		}
-	}
-	r.pkg.UpdateType(try0, try0Obj.Type())
-	r.pkg.UpdateType(try0Id, try0Obj.Type())
-
-	r.pkg.UpdateUses(try0, try0Obj)
 
 	// 处理上述第二种思路 2 和 3 两种 case
 	// 遍历 enclosing func 的 body 中所有跳转到当前 for 的 continue 节点
-	// 并在之前 copy 一份 post
+	// 并在之前 copy 一份 post 调用
 	cpCnt := 0
 	jTbl := r.jmpTbl(enclosingFn)
 	_, stmt := unpackFunc(enclosingFn)
@@ -364,16 +254,15 @@ func (r *fileRewriter) preRewriteForPost(ctx mctx, forStmt *ast.ForStmt, enclosi
 		if jTbl.JumpTo(n, forStmt) {
 			// 这里有两种思路
 			//	1. 复制 post 节点
-			//	 	c.InsertBefore(cloneNode(post))
+			//	 	c.InsertBefore(cloneNode(tryCallPost))
 			//		但是, 只复制 ast 结构不行, tryNodes 信息也需要复制
 			//		否则 rewrite 其他节点的 tryNodes 判断不准确
 			//	2. 复制 post 引用
-			//		带来的问题是, 后续 rewrite 只能当节点是 immutable 是偶
-			//		而不能 inplace 替换, 每次修改都需要新建节点, 否则, 会改写所有被复制的节点
-			//	这里采用第二种方式, 复制 tryNodes 的工作量也不小, 基本是无差别遍历 ast
-			// c.InsertBefore(post)
-			c.InsertBefore(tryCallPost) // todo
-			// 更新parent tryNode // todo
+			//		带来的问题是, 后续 rewrite 只能默认节点是 immutable
+			//		而不能 in_place 替换, 每次修改都需要新建节点, 否则, 会改写所有被复制的节点
+			//	这里采用第二种方式
+			c.InsertBefore(tryCallPost)
+			// 更新parent tryNode
 			for _, x := range ctx.Stack {
 				r.tryNodes[x] = true
 			}
@@ -400,28 +289,143 @@ func (r *fileRewriter) preRewriteForPost(ctx mctx, forStmt *ast.ForStmt, enclosi
 	}
 
 	// 处理上述 case 1
-	// 往 body 末尾复制一份 post, 并保留了 post 如果是死代码的语义
+	// 往 body 末尾复制一份 post 调用, 并保留了死代码的语义
 	if isTerminatingForBody(forStmt.Body) {
-		// forStmt.Body.List = append(forStmt.Body.List, post) // todo
 		forStmt.Body.List = append(forStmt.Body.List, tryCallPost)
-		// todo 这里应该不用向上更新了, 因为 for.Post 包含, 所以 parent 已经是正确的
+
+		// 这里不用继续向上更新了, 因为 for.Post 包含 try 调用, 所以 parent 已经是正确的
 		r.tryNodes[forStmt.Body] = true
-	} else if cpCnt == 0 { // 处理 post 死代码的情况
+	} else if cpCnt == 0 {
+		// 处理 post 死代码的情况
 		deadCode := &ast.IfStmt{
 			Cond: constFalse(),
 			Body: &ast.BlockStmt{
-				// List: []ast.Stmt{post},
-				List: []ast.Stmt{tryCallPost}, // todo
+				List: []ast.Stmt{tryCallPost},
 			},
 		}
-		// todo 这里应该不用向上更新了, 因为 for.Post 包含, 所以 parent 已经是正确的
-		r.tryNodes[forStmt.Body] = true
 		forStmt.Body.List = append(forStmt.Body.List, deadCode)
 
-		// 更新 tryNodes 信息
+		// 这里不用继续向上更新了, 因为 for.Post 包含 try 调用, 所以 parent 已经是正确的
+		r.tryNodes[forStmt.Body] = true
 		r.tryNodes[deadCode] = true
 		r.tryNodes[deadCode.Body] = true
 	}
+}
+
+func (r *fileRewriter) mkPostFnLit(post ast.Stmt, enclosingFn fnNode) (varPostFn ast.Expr, postFnAssign ast.Stmt) {
+	r.importRT = true // for rt.𝗘𝗿𝗿𝗼𝗿
+
+	varPostFn = r.genPostId(enclosingFn)
+	postFnLit := &ast.FuncLit{ // try!
+		Type: &ast.FuncType{
+			Params: &ast.FieldList{},
+			Results: &ast.FieldList{
+				List: []*ast.Field{{
+					// 这里 func() (_ error) {} 处理成 _ 是为了 body 最后不用 return nil
+					// 从而避免检查 nil 是否 shadow
+					Names: []*ast.Ident{ast.NewIdent("_")},
+					// error 可能被 shadow 重新定义, e.g.
+					// type error = int
+					// 𝗽𝗼𝘀𝘁𝟭 := func() (_ error) { ... }
+					// 所以这里 ref rt 中的 error 别名
+					Type: ast.NewIdent(rtErrorTyName), // rt.E𝗿𝗿𝗼𝗿
+				}},
+			},
+		},
+		Body: &ast.BlockStmt{ // try!
+			List: []ast.Stmt{
+				post, // try!
+				&ast.ReturnStmt{ /*Results: []ast.Expr{ ast.NewIdent("nil") }*/ },
+			},
+		},
+	}
+	postFnAssign = &ast.AssignStmt{ // try!
+		Lhs: []ast.Expr{varPostFn},
+		Tok: token.DEFINE,
+		Rhs: []ast.Expr{postFnLit},
+	}
+
+	r.tryNodes[postFnLit] = true
+	r.tryNodes[postFnLit.Body] = true
+	r.tryNodes[postFnAssign] = true
+
+	postFnSig := types.NewSignatureType(
+		nil,
+		nil,
+		nil,
+		nil,
+		types.NewTuple(types.NewVar(
+			token.NoPos,
+			r.pkg.Types,
+			"",
+			r.errTy,
+		)),
+		false,
+	)
+	r.pkg.UpdateType(varPostFn, postFnSig)
+	r.pkg.UpdateType(postFnLit, postFnSig)
+	return
+}
+
+func (r *fileRewriter) mkTryCallPost(varPostFn ast.Expr) (tryCallPost *ast.ExprStmt) {
+	// 不能直接展开成 err:=post();  if err != nil { return err } 形式
+	// 需要处理 defer err 的逻辑, 所以改成行, try.Try0(post()), 而 Try0 展开统一到 rewrite 阶段处理
+	// 但是带来另一个问题, 新生成的代码需要标记
+	// 1. tryNode 信息, 后续 rewrite 会使用
+	// 2. caller 节点需要更新类型信息, 后续 rewrite 会使用
+
+	// 这里不怕 try 或者 Try0 已经被重新定义
+	// 这里会手动 Try0 的 type.Object 信息, rewrite 会被改写消除
+	// e.g.,
+	// 	for a := 1; a > 0; a = Try(ret1Err[int]()) {
+	//		Try0 := 1
+	//		_ = Try0
+	//	}
+
+	var tryFn ast.Expr
+	try0Id := ast.NewIdent("Try0")
+	x := imports.ImportSpec(r.f, pkgTryPath).Name
+	switch {
+	case x == nil:
+		tryFn = &ast.SelectorExpr{
+			X:   ast.NewIdent("try"),
+			Sel: try0Id,
+		}
+	case x.Name == ".":
+		tryFn = try0Id
+	default:
+		tryFn = &ast.SelectorExpr{
+			X:   ast.NewIdent(x.Name),
+			Sel: try0Id,
+		}
+	}
+
+	callPost := &ast.CallExpr{Fun: varPostFn}
+	tryCallPost = &ast.ExprStmt{ //try!
+		X: &ast.CallExpr{ // try!
+			Fun: tryFn, // try!
+			Args: []ast.Expr{
+				callPost,
+			},
+		},
+	}
+
+	r.tryNodes[tryCallPost] = true
+	r.tryNodes[tryCallPost.X] = true
+
+	// 后续改写 try call 需要检查返回值, ref retCntOfFnExpr
+	// 所以这里需要更新下生成的 post 调用的类型信息
+	r.pkg.UpdateType(callPost, r.errTy)
+
+	// 后续改写 try call 需要检查 callee 是否是 try func call
+	// 所以这里需要更新 try func 的类型信息
+	try0Obj := r.tryCallObject(tryFnNames[0])
+	if false { // 暂时没用到
+		r.pkg.UpdateType(tryFn, try0Obj.Type())
+		r.pkg.UpdateType(try0Id, try0Obj.Type())
+	}
+	r.pkg.UpdateUses(tryFn, try0Obj)
+	return
 }
 
 func negativeCondExpr(cond ast.Expr) ast.Expr {

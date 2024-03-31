@@ -6,7 +6,7 @@ import (
 	. "github.com/goghcrow/go-try"
 )
 
-func xxx() (err error) {
+func dbg() (err error) {
 	//for a := 1; a > 0; a = Try(ret1Err[int]()) {
 	//	a := 42
 	//	_ = a
@@ -17,13 +17,18 @@ func xxx() (err error) {
 	//	_ = a
 	//}
 
-	for a := 1; a > 0; a = Try(ret1Err[int]()) {
-		a := 42
-		_ = a
-		if true {
-			continue
-		}
-		println(a)
+	//for a := 1; a > 0; a = Try(ret1Err[int]()) {
+	//	a := 42
+	//	_ = a
+	//	if true {
+	//
+	//		continue
+	//	}
+	//	println(a)
+	//}
+
+	for i := Try(ret1Err[A]()); Try(func1[int, bool](i)); Try(func1[A, C](i)) {
+		println(i)
 	}
 
 	return nil

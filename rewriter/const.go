@@ -25,7 +25,9 @@ const (
 )
 
 var (
-	tryFnNames     = []string{"Try0", "Try", "Try2", "Try3"}
+	tryFnNames = []string{"Try0", "Try", "Try2", "Try3"}
+	// rt.go 中 exported 符号均为非 ascii 字符, 假设正常代码应该不会出现
+	// 从避免引入 避免捕获的替换 之类方法
 	rtTupleFnNames = []string{"Ø", "Ƭ𝟭", "Ƭ2", "Ƭ3", "Ƭ4", "Ƭ5", "Ƭ6", "Ƭ7", "Ƭ8", "Ƭ9"}
 	rtErrorTyName  = "E𝗿𝗿𝗼𝗿"
 )

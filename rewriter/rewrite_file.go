@@ -198,8 +198,19 @@ func (r *fileRewriter) containsTryCall(n ast.Node, _ mctx) bool {
 	return r.tryNodes[n]
 }
 
+// expr -> object -> name
 func (r *fileRewriter) tryCallee(callSite *ast.CallExpr) string {
 	return r.tryFns[typeutil.Callee(r.pkg.TypesInfo, callSite)]
+}
+
+// name -> object
+func (r *fileRewriter) tryCallObject(tryFnName string) types.Object {
+	for obj, name := range r.tryFns {
+		if tryFnName == name {
+			return obj
+		}
+	}
+	return nil
 }
 
 func (r *fileRewriter) mkSym(f fnNode, s string) *ast.Ident       { return r.symTbl(f).mk(s) }

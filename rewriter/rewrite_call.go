@@ -2,10 +2,11 @@ package rewriter
 
 import (
 	"fmt"
-	"github.com/goghcrow/go-loader"
 	"go/ast"
 	"go/token"
 	"go/types"
+
+	"github.com/goghcrow/go-loader"
 	"golang.org/x/tools/go/ast/astutil"
 )
 

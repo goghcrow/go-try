@@ -126,3 +126,10 @@ func fnlit() {
 		}()
 	}()
 }
+
+func unparen() error {
+	{
+		_ = Try((ret1Err[int]()))
+	}
+	return nil
+}
